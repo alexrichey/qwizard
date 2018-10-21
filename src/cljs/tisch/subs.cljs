@@ -8,11 +8,8 @@
    (:name db)))
 
 (re-frame/reg-sub
- ::things
+ ::dictionary
  (fn [db]
-   (:things db)))
+   (:dictionary db)))
 
-(re-frame/reg-sub
- ::prepositions
- (fn [db]
-   (:prepositions db)))
+

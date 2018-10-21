@@ -1,12 +1,16 @@
 (ns tisch.lang
   (:require
+   [tisch.db :as db]
    [tisch.utils :as utils]
-   ))
+   [com.rpl.specter :as s]))
 
-(defn make-preposition-phrase [prepositions things]
-  (let [thing (rand-nth things)
-        other-thing (rand-nth things)
-        prep (rand-nth prepositions)]
-    [(:article thing) (:name thing)
-     "ist" (:name prep)
-     (utils/singular-article->prep-article (:article other-thing)) (:name other-thing)]))
+(defn make-preposition-phrase [dictionary]
+  (let [thing1 (rand-nth (:things dictionary))
+        thing2 (rand-nth (:things dictionary))
+        prep (rand-nth (:prepositions dictionary))]
+    [(db/lookup-article dictionary (:article thing1))
+     thing1
+     db/ist
+     prep
+     (db/article->prep-article (db/lookup-article dictionary (:article thing2)))
+     thing2]))

@@ -21,6 +21,7 @@
   {:dev
    {:dependencies [[binaryage/devtools "0.9.10"]
                    [figwheel-sidecar "0.5.16"]
+                   [com.rpl/specter "1.1.1"]
                    [cider/piggieback "0.3.5"]]
 
     :plugins      [[lein-figwheel "0.5.16"]

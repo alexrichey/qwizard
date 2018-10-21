@@ -27,3 +27,6 @@
 
 (defn insert-spaces-into-word-list [word-list]
   (interpose " " word-list))
+
+(defn rand-str []
+  (apply str (take 8 (repeatedly #(char (+ (rand 26) 65))))))
