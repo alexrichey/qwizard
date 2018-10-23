@@ -8,7 +8,8 @@
 (re-frame/reg-sub ::units        (fn [db] (:units db)))
 
 ;; vocab drills
-(re-frame/reg-sub ::vocab-drills (fn [db] (:vocab-drills (:unit-states db))))
+(re-frame/reg-sub ::vocab-drills (fn [db] (:vocab-drills (:units db))))
+(re-frame/reg-sub ::article-drills (fn [db] (:articles-drill (:units db))))
 
 
 

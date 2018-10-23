@@ -4,6 +4,7 @@
   {:name "re-frame"
    :current-unit :preposition-phrases
    :units {:preposition-phrases {:name "Prepositional Phrases"}
+           :articles-drill      {:name "Articles drilling" :show-answers false :vocab []}
            :vocab-drills        {:name "Vocab Drills!"}}
    :unit-states {}
    :dictionary {:things [
@@ -49,9 +50,6 @@
                          {:name "Zelt" :article "das" :plural "-e" :english "Tent" :chapter 14 :type :noun}
                          {:name "" :article "das" :plural "-e" :english "Tent" :chapter 14 :type :noun}
 
-                         ;; Chapter 14 Verbs
-                         {:name "" :article "das" :plural "-e" :english "Tent" :chapter 14 :type :noun}
-
                          ;; Chapter 14 Prepositional Adjectives
                          {:name "hinten" :english "behind" :chapter 14}
                          {:name "oben" :english "above" :chapter 14}
@@ -82,6 +80,8 @@
                                {:name "in"       :english "in"}
                                {:name "hinter"   :english "behind"}]}})
 
+(defn nouns [dictionary]
+  (into [] (filter #(= (:type %) :noun) (:things dictionary))))
 
 (defn init-vocab-drills [db]
   (let [things (shuffle (:things (:dictionary default-db)))]
@@ -107,8 +107,6 @@
 
 (map #(into {} (assoc (second %) :key (first %))) [{:a "b"}
                                          { :c "d"}])
-(first {:a :b})
-(get-unit :vocab-drills default-db)
 
 (def prepositions #{"der" "die" "das" "den"})
 
@@ -119,3 +117,9 @@
   (assoc article :name (get article :as-preposition)))
 
 (def ist {:name "ist" :english "is"})
+
+(defn toggle-show-answers [db]
+  (update-in db [:units :articles-drill :show-answers] not))
+
+(defn articles-drill-shuffle-questions [db]
+  (assoc-in db [:units :articles-drill :vocab] shuffle))
