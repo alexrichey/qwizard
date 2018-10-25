@@ -23,7 +23,7 @@
                          {:name "Miete" :article "die" :plural "-n" :english "Rental Fee" :chapter 14 :type :noun}
                          {:name "Müll" :article "der" :plural "" :english "Rubbish" :chapter 14 :type :noun}
                          {:name "Nachbar" :article "der" :plural "-n" :english "Neighboring" :chapter 14 :type :noun}
-                         {:name "Nachbarin" :article "der" :plural "-nen" :english "Neighboring" :chapter 14 :type :noun}
+                         {:name "Nachbarin" :article "der" :plural "-nen" :english "Neighbor" :chapter 14 :type :noun}
                          {:name "Quadratmeter" :article "der" :plural "" :english "square meters" :chapter 14 :type :noun :notes "pronounced Kwa drot mit ta"}
                          {:name "Stock" :article "der" :plural "Stockwerke" :english "Floor" :chapter 14 :type :noun}
                          {:name "Treppe" :article "die" :plural "-n" :english "Stairway" :chapter 14 :type :noun}
@@ -32,11 +32,11 @@
                          {:name "gemütlich" :english "cozy" :type :adjective :chapter 14}
                          {:name "Arbeitszimmer" :article "das" :plural "" :english "study (room)" :chapter 14 :type :noun}
                          {:name "Zimmer" :article "das" :plural "-" :english "Room" :chapter 14 :type :noun}
-                         {:name "Bad" :article "das" :plural "-ër" :english "" :chapter 14 :type :noun}
+                         {:name "Bad" :article "das" :plural "-ër" :english "Bathroom" :chapter 14 :type :noun}
                          {:name "Flur" :article "der" :plural "-e" :english "Corridor" :english-alts ["Hallway"] :chapter 14 :type :noun}
                          {:name "Kinderzimmer" :article "das" :plural "" :english "Nursery" :chapter 14 :type :noun}
                          {:name "Küche" :article "die" :plural "-n" :english "Kitchen" :chapter 14 :type :noun}
-                         {:name "Schafzimmer" :article "das" :plural "-" :english "Bedroom" :chapter 14 :type :noun}
+                         {:name "Schlafzimmer" :article "das" :plural "-" :english "Bedroom" :chapter 14 :type :noun}
                          {:name "Toilette" :article "die" :plural "-n" :english "Toilet (Room)" :chapter 14 :type :noun}
                          {:name "Wohnzimmer" :article "das" :plural "-" :english "Living Room" :chapter 14 :type :noun}
                          {:name "Berg" :article "der" :plural "-e" :english "Mountain" :chapter 14 :type :noun}
@@ -48,7 +48,7 @@
                          {:name "Familie" :article "die" :plural "-n" :english "Family" :chapter 14 :type :noun}
                          {:name "Stadt" :article "die" :plural "-ë" :english "City" :chapter 14 :type :noun}
                          {:name "Zelt" :article "das" :plural "-e" :english "Tent" :chapter 14 :type :noun}
-                         {:name "" :article "das" :plural "-e" :english "Tent" :chapter 14 :type :noun}
+                         ;; {:name "" :article "das" :plural "-e" :english "Tent" :chapter 14 :type :noun}
 
                          ;; Chapter 14 Prepositional Adjectives
                          {:name "hinten" :english "behind" :chapter 14}
@@ -63,13 +63,14 @@
                          ;; previous Chapters
                          {:name "Wortschatz"  :article "der" :plural "Wortschätze"  :english "Vocabulary" :chapter 14 :type :noun}
                          {:name "Beruf"       :article "der" :plural "Berufe"       :english "job"       :chapter 2 :type :noun}
+                         {:name "Bildung"     :article "die" :plural "Bildungen"    :english "Education" :type :noun}
                          {:name "Ausbildung"  :article "die" :plural "Ausbildungen" :english "training"  :chapter 2 :type :noun}
                          {:name "Arbeitgeber" :article "der" :plural "Arbeitgeber"  :english "Employer"  :chapter 2 :type :noun}
                          {:name "Tisch"       :article "der" :plural "Tische"       :english "Table"     :chapter nil :type :noun}
                          {:name "Handy"       :article "das" :plural "Handys"       :english "Cellphone" :chapter nil :type :noun}]
-                :articles [{:name "der" :as-preposition "den" :plural "die"}
-                           {:name "die" :as-preposition "die" :plural "die"}
-                           {:name "das" :as-preposition "die" :plural "die"}]
+                :articles [{:name "der" :as-preposition "den" :plural "die" :akkusative-dein "deinen"}
+                           {:name "die" :as-preposition "die" :plural "die" :akkusative-dein "deine"}
+                           {:name "das" :as-preposition "die" :plural "die" :akkusative-dein "dein"}]
                 :prepositions [{:name "neben"    :english "near to"}
                                {:name "auf"      :english "on top of"}
                                {:name "an"       :english "at or near"}
@@ -85,10 +86,10 @@
 
 (defn init-vocab-drills [db]
   (let [things (shuffle (:things (:dictionary default-db)))]
-   (-> db
-       (assoc :current-unit :vocab-drills)
-       (assoc-in [:unit-states :vocab-drills] {:vocab things})
-       (assoc-in [:unit-states :vocab-drills :current-word] "Hi there"))))
+    (-> db
+        (assoc :current-unit :vocab-drills)
+        (assoc-in [:unit-states :vocab-drills] {:vocab things})
+        (assoc-in [:unit-states :vocab-drills :current-word] "Hi there"))))
 
 (defn change-unit [db unit-key]
   (case unit-key
