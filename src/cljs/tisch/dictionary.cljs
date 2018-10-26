@@ -1,6 +1,36 @@
 (ns tisch.dictionary)
 
 (def german {:things [
+                      ;; Chapter 15 Verbs
+                      {:name "danken" :english "to thank" :past-perfect "gedankt" :chapter 15 :type :verb}
+                      {:name "fehlen" :english "to miss (missing)" :past-perfect "gefehlt" :chapter 15 :type :verb}
+                      {:name "gehören" :english "to belong" :past-perfect "gehört" :chapter 15 :type :verb}
+                      {:name "gehören" :english "to belong" :past-perfect "gehört" :chapter 15 :type :verb}
+                      
+                      ;; Chapter 15 Adjectives
+                      {:name "wichtig" :english "important" :chapter 15 :type :adjective}
+                      {:name "wengi" :english "few / little" :chapter 15 :type :adjective}
+
+                      ;; Chapter 15 Vocab
+                      {:name "Wetter" :article "das" :plural "" :english "Weather" :chapter 15 :type :noun}
+                      {:name "Urlaub" :article "der" :plural "" :english "Vacation" :chapter 15 :type :noun}
+                      {:name "Rezept" :article "das" :plural "-e" :english "Recipe" :chapter 15 :type :noun}
+                      {:name "Reisebüro" :article "das" :plural "s" :english "Travel Agency" :chapter 15 :type :noun}
+                      {:name "Mesch" :article "der" :plural "-en" :english "Human" :chapter 15 :type :noun}
+                      {:name "Turm" :article "der" :plural "-ë" :english "Tower" :chapter 15 :type :noun}
+                      {:name "Spielplatz" :article "der" :plural "-ë" :english "Playground" :chapter 15 :type :noun}
+                      {:name "Schloss" :article "das" :plural "-ër" :english "Castle" :chapter 15 :type :noun}
+                      {:name "Rathaus" :article "das" :plural "-ër" :english "City Hall" :chapter 15 :type :noun}
+                      {:name "Park" :article "der" :plural "-s" :english "Park" :chapter 15 :type :noun}
+                      {:name "Markt" :article "der" :plural "Marktën" :english "Market" :chapter 15 :type :noun}
+                      {:name "Kirche" :article "die" :plural "-en" :english "Church" :chapter 15 :type :noun}
+                      {:name "Kindergarten" :article "der" :plural "Kindergärten" :english "Kindergarten" :chapter 15 :type :noun}
+                      {:name "Jugendherberge" :article "die" :plural "-e" :english "Hostel" :chapter 15 :type :noun}
+                      {:name "Hafen" :article "der" :plural "Häfen" :english "Port" :chapter 15 :type :noun}
+                      {:name "Geschäft" :article "das" :plural "-e" :english "Business" :chapter 15 :type :noun}
+                      {:name "Biblioteck" :article "die" :plural "-en" :english "Library" :chapter 15 :type :noun}
+
+
                       ;; Chapter 14 Vocab
                       {:name "Haus" :article "das" :plural "Häuser" :english "House" :chapter 14 :type :noun}
                       {:name "Wohnung" :article "die" :plural "-en" :english "Apartment" :chapter 14 :type :noun}
@@ -42,6 +72,11 @@
                       {:name "Stadt" :article "die" :plural "-ë" :english "City" :chapter 14 :type :noun}
                       {:name "Zelt" :article "das" :plural "-e" :english "Tent" :chapter 14 :type :noun}
                       ;; {:name "" :article "das" :plural "-e" :english "Tent" :chapter 14 :type :noun}
+
+                      ;; Chapter 14 Verbs
+                      {:name "aussehen" :english "to appear" :past-perfect "ausgesehen" :chapter 15 :type :verb}
+                      {:name "bezahlen" :english "to pay" :past-perfect "bezahlt" :chapter 15 :type :verb}
+                      {:name "stehen" :english "to stehen" :past-perfect "gestanden" :chapter 15 :type :verb}
 
                       ;; Chapter 14 Prepositional Adjectives
                       {:name "hinten" :english "behind" :chapter 14}
