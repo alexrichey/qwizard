@@ -49,15 +49,17 @@
 (defn articles-drill []
   (let [dictionary  (re-frame/subscribe [::subs/dictionary])
         unit  (re-frame/subscribe [::subs/article-drills])
-        nouns (db/nouns @dictionary)
-        nouns-with-articles (map #(vector (db/lookup-article @dictionary (:article %))
-                                          %)
-                                 nouns)]
+        nouns (:vocab @unit)
+        current-word (get (:vocab @unit) (:current-word-index @unit))
+        current-word-with-article (vector (db/lookup-article @dictionary (:article current-word)) current-word)]
     [:div {}
      [:button {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answers"]
-     [:button {:onClick #(re-frame.core/dispatch [:shuffle-questions])} "Shuffle"]
      [:div {} (str "showing answers? " (:show-answers @unit) )]
-     (doall (map #(article-drill-phrase % (:show-answers @unit)) nouns-with-articles))]))
+     [:div {} (article-drill-phrase current-word-with-article (:show-answers @unit))]
+     [:button {:onClick #(re-frame.core/dispatch [:previous-question])} "previous!"]
+     [:button {:onClick #(re-frame.core/dispatch [:next-question])} "next!"]
+     ;; [:div {} (str @unit)]
+     ]))
 
 (defn vocab-drills []
   (let [dictionary  (re-frame/subscribe [::subs/dictionary])
@@ -76,11 +78,13 @@
   (let [current-unit-key @(re-frame/subscribe [::subs/current-unit])
         units (re-frame/subscribe [::subs/units])
         current-unit (get @units current-unit-key)]
-    [:div
+    [:div  {:class "main" }
+    ;; [:div  {:class "main" :on-key-press #(re-frame.core/dispatch [:keypress %])}
      (nav (db/units-as-list @units))
      [:h1 (str "Current Unit: " (:name current-unit)) ]
      [:div "----------"]
-     [:div {}
+     [:div {:tab-index 0 :on-key-down (fn [e] (let [keycode (.-keyCode e)]
+                                                 (re-frame.core/dispatch [:keypress keycode])))}
       (case current-unit-key
         :vocab-drills (vocab-drills)
         :articles-drill (articles-drill)
