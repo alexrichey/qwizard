@@ -6,7 +6,7 @@
                       {:name "fehlen" :english "to miss (missing)" :past-perfect "gefehlt" :chapter 15 :type :verb}
                       {:name "gehören" :english "to belong" :past-perfect "gehört" :chapter 15 :type :verb}
                       {:name "gehören" :english "to belong" :past-perfect "gehört" :chapter 15 :type :verb}
-                      
+
                       ;; Chapter 15 Adjectives
                       {:name "wichtig" :english "important" :chapter 15 :type :adjective}
                       {:name "wengi" :english "few / little" :chapter 15 :type :adjective}

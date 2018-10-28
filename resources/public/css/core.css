@@ -9,3 +9,10 @@
 .neutral {
   color: green;
 }
+
+.articles-drill {
+  height: 300px;
+  border-style: solid:
+  border-color: black;
+  border-width: 1px;
+}

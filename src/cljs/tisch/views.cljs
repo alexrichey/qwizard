@@ -3,12 +3,14 @@
    [re-frame.core :as re-frame]
    [tisch.db :as db]
    [tisch.subs :as subs]
+   [tisch.dictionary :as dictionary]
+   [tisch.german :as german]
    [tisch.utils :as utils]
    [tisch.lang :as lang]))
 
 ;; sentence structure
 (defn word [word]
-  (let [class (if (contains? db/prepositions (:name word))
+  (let [class (if (contains? german/prepositions (:name word))
                 (utils/article->gender (:name word))
                 nil)]
     [:span {:key (utils/rand-str) :class class} (:name word)]))
@@ -21,8 +23,8 @@
     [:div {:key (utils/rand-str)} (map word with-spaces)]))
 
 (defn prepositions []
-  (let [dictionary (re-frame/subscribe [::subs/dictionary])
-        phrases (doall (take 10 (repeatedly #(lang/make-preposition-phrase @dictionary))))]
+  (let [dictionary dictionary/german
+        phrases (doall (take 10 (repeatedly #(lang/make-preposition-phrase dictionary))))]
     (map phrase phrases)))
 
 
@@ -43,36 +45,29 @@
      (if show-answers "      -> ")
      (if show-answers (word (first words)))
      " "
-     (if show-answers (word (second words)))
-     ]))
+     (if show-answers (word (second words)))]))
 
 (defn articles-drill []
-  (let [dictionary  (re-frame/subscribe [::subs/dictionary])
+  (let [dictionary  dictionary/german
         unit  (re-frame/subscribe [::subs/article-drills])
         nouns (:vocab @unit)
         current-word (get (:vocab @unit) (:current-word-index @unit))
-        current-word-with-article (vector (db/lookup-article @dictionary (:article current-word)) current-word)]
-    [:div {}
+        current-word-with-article (vector (german/lookup-article (:article current-word)) current-word)]
+    [:div {:class "articles-drill"}
      [:button {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answers"]
-     [:div {} (str "showing answers? " (:show-answers @unit) )]
-     [:div {} (article-drill-phrase current-word-with-article (:show-answers @unit))]
      [:button {:onClick #(re-frame.core/dispatch [:previous-question])} "previous!"]
      [:button {:onClick #(re-frame.core/dispatch [:next-question])} "next!"]
+     [:div {} (article-drill-phrase current-word-with-article (:show-answers @unit))]
      ;; [:div {} (str @unit)]
      ]))
 
 (defn vocab-drills []
-  (let [dictionary  (re-frame/subscribe [::subs/dictionary])
-        drills (re-frame/subscribe [::subs/vocab-drills])]
+  (let [drills (re-frame/subscribe [::subs/vocab-drills])]
     [:div {}
      [:div {} (map
                (fn [x] [:div {:key (utils/rand-str)} (str (:article x) " " (:name x))])
                (:vocab @drills))]]))
 
-
-;; main
-(def unit-components {:preposition-phrases prepositions
-                      :vocab-drills vocab-drills})
 
 (defn main-panel []
   (let [current-unit-key @(re-frame/subscribe [::subs/current-unit])

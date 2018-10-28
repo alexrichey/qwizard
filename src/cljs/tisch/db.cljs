@@ -1,5 +1,6 @@
 (ns tisch.db
-  (:require [tisch.dictionary :as dictionary]))
+  (:require [tisch.dictionary :as dictionary]
+            [tisch.german :as german]))
 
 (def default-db
   {:name "re-frame"
@@ -10,9 +11,6 @@
    :unit-states {}
    :dictionary dictionary/german})
 
-(defn nouns [dictionary]
-  (into [] (filter #(= (:type %) :noun) (:things dictionary))))
-
 (defn init-vocab-drills [db]
   (let [things (shuffle (:things (:dictionary default-db)))]
     (-> db
@@ -21,7 +19,7 @@
         (assoc-in [:unit-states :vocab-drills :current-word] "Hi there"))))
 
 (defn init-articles-drill [db]
-  (let [nouns (shuffle (nouns (:dictionary db)))]
+  (let [nouns (shuffle (german/nouns))]
     (-> db
        (assoc :current-unit :articles-drill)
        (assoc-in [:units :articles-drill :vocab] nouns)
@@ -43,19 +41,6 @@
 
 (defn units-as-list [units]
   (into [] (map #(assoc (second %) :key (first %)) units)))
-
-(map #(into {} (assoc (second %) :key (first %))) [{:a "b"}
-                                         { :c "d"}])
-
-(def prepositions #{"der" "die" "das" "den"})
-
-(defn lookup-article [dictionary article]
-  (first (filter #(= (:name %) article) (:articles dictionary))))
-
-(defn article->prep-article [article]
-  (assoc article :name (get article :as-preposition)))
-
-(def ist {:name "ist" :english "is"})
 
 (defn toggle-show-answers [db]
   (update-in db [:units :articles-drill :show-answers] not))
