@@ -103,6 +103,15 @@
    {:name "die" :as-preposition "die" :plural "die" :akkusative-dein "deine" :type :article}
    {:name "das" :as-preposition "die" :plural "die" :akkusative-dein "dein" :type :article}
 
+   ;; basic subject
+   {:name "Ich" :english "I" :type :noun :basic-subject? true}
+   {:name "Du" :english "You" :type :noun :basic-subject? true}
+   {:name "Wir" :english "We" :type :noun :basic-subject? true}
+   {:name "Ihr" :english "You All" :type :noun :basic-subject? true}
+   {:name "er" :english "He" :type :noun :basic-subject? true}
+   {:name "sie" :english "She" :type :noun :basic-subject? true}
+   {:name "sie" :english "She" :type :noun :basic-subject? true}
+
    ;; prepositions
    {:name "neben"    :english "near to" :type :preposition}
    {:name "auf"      :english "on top of" :type :preposition}
@@ -112,4 +121,7 @@
    {:name "über"     :english "over" :type :preposition}
    {:name "unter"    :english "under" :type :preposition}
    {:name "in"       :english "in" :type :preposition}
-   {:name "hinter"   :english "behind" :type :preposition}])
+   {:name "hinter"   :english "behind" :type :preposition}
+   {:name "hinter"   :english "behind" :type :preposition}
+
+   ])
