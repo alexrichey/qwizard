@@ -1,6 +1,7 @@
 (ns tisch.events
   (:require
    [re-frame.core :as re-frame]
+   [tisch.util :as util]
    [tisch.db :as db]))
 
 (defn change-unit [coeffects event]
@@ -33,3 +34,9 @@
 
 (re-frame.core/reg-event-fx :next-question (fn [coeffects event] {:db (db/articles-drill-next-question (:db coeffects))}))
 (re-frame.core/reg-event-fx :previous-question (fn [coeffects event] {:db (db/articles-drill-previous-question (:db coeffects))}))
+(re-frame.core/reg-event-fx :chapter-filter-num-change
+                            (fn [coeffects event]
+                              (let [chapter (second event)]
+                                (if (util/is-actually-an-int? chapter)
+                                  {:db (db/set-chapter-filter (:db coeffects) (int chapter))}
+                                  {}))))

@@ -23,7 +23,18 @@
        (assoc :current-unit :articles-drill)
        (assoc-in [:units :articles-drill :vocab] nouns)
        (assoc-in [:units :articles-drill :current-word-index] 0)
-       (assoc-in [:units :articles-drill :current-word] (first nouns)))))
+       (assoc-in [:units :articles-drill :current-word] (first nouns))
+       )))
+
+(defn set-chapter-filter [db chapter]
+  (if (not (some? chapter))
+    db
+    (let [nouns (shuffle (german/nouns-for-chapter chapter))]
+      (-> db
+         (assoc-in [:units :articles-drill :chapter-filter] chapter)
+         (assoc-in [:units :articles-drill :vocab] nouns)
+         (assoc-in [:units :articles-drill :current-word-index] 0)
+         (assoc-in [:units :articles-drill :current-word] (first nouns))))))
 
 (defn change-unit [db unit-key]
   (case unit-key

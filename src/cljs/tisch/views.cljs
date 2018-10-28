@@ -54,6 +54,11 @@
         current-word (get (:vocab @unit) (:current-word-index @unit))
         current-word-with-article (vector (german/lookup-article (:article current-word)) current-word)]
     [:div {:class "articles-drill"}
+     [:input {:type :number
+              :value (:chapter-filter @unit)
+              :onChange (fn [e] (let [num (.-value (.-currentTarget e))]
+                                  (re-frame.core/dispatch [:chapter-filter-num-change num])))} ]
+     [:div {} (str "total words: " (count nouns))]
      [:button {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answers"]
      [:button {:onClick #(re-frame.core/dispatch [:previous-question])} "previous!"]
      [:button {:onClick #(re-frame.core/dispatch [:next-question])} "next!"]
@@ -74,7 +79,6 @@
         units (re-frame/subscribe [::subs/units])
         current-unit (get @units current-unit-key)]
     [:div  {:class "main" }
-    ;; [:div  {:class "main" :on-key-press #(re-frame.core/dispatch [:keypress %])}
      (nav (db/units-as-list @units))
      [:h1 (str "Current Unit: " (:name current-unit)) ]
      [:div "----------"]
