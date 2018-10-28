@@ -8,14 +8,13 @@
    :units {:preposition-phrases {:name "Prepositional Phrases"}
            :articles-drill      {:name "Articles drilling" :show-answers false :vocab [{:name "Initial"}]}
            :vocab-drills        {:name "Vocab Drills!"}}
-   :unit-states {}
-   :dictionary dictionary/german})
+   :unit-states {}})
 
 (defn init-vocab-drills [db]
-  (let [things (shuffle (:things (:dictionary default-db)))]
+  (let [nouns (shuffle (german/nouns))]
     (-> db
         (assoc :current-unit :vocab-drills)
-        (assoc-in [:unit-states :vocab-drills] {:vocab things})
+        (assoc-in [:unit-states :vocab-drills] {:vocab nouns})
         (assoc-in [:unit-states :vocab-drills :current-word] "Hi there"))))
 
 (defn init-articles-drill [db]
@@ -34,10 +33,6 @@
 
 (defn get-unit [unit-key db]
   (first (filter #(= (:key %) unit-key) (:units db))))
-
-(let [data {:preposition-phrases {:name "Prepositional Phrases"}
-            :vocab-drills        {:name "Vocab Drills!"}}]
-  (into [] (map #(assoc (second %) :key (first %)) data)))
 
 (defn units-as-list [units]
   (into [] (map #(assoc (second %) :key (first %)) units)))

@@ -4,10 +4,10 @@
    [tisch.german :as german]
    [tisch.utils :as utils]))
 
-(defn make-preposition-phrase [dictionary]
-  (let [thing1 (rand-nth (:things dictionary))
-        thing2 (rand-nth (:things dictionary))
-        prep (rand-nth (:prepositions dictionary))]
+(defn make-preposition-phrase []
+  (let [thing1 (rand-nth (german/nouns))
+        thing2 (rand-nth (german/nouns))
+        prep (rand-nth (german/prepositions))]
     [(german/lookup-article (:article thing1))
      thing1
      german/ist

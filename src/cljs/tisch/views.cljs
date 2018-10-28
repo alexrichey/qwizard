@@ -10,7 +10,7 @@
 
 ;; sentence structure
 (defn word [word]
-  (let [class (if (contains? german/prepositions (:name word))
+  (let [class (if (german/article? word)
                 (utils/article->gender (:name word))
                 nil)]
     [:span {:key (utils/rand-str) :class class} (:name word)]))
@@ -24,7 +24,7 @@
 
 (defn prepositions []
   (let [dictionary dictionary/german
-        phrases (doall (take 10 (repeatedly #(lang/make-preposition-phrase dictionary))))]
+        phrases (doall (take 10 (repeatedly #(lang/make-preposition-phrase))))]
     (map phrase phrases)))
 
 
