@@ -42,13 +42,13 @@
 
 ;; helpers
 (defn lookup-article [article]
-  (first (filter #(= (:name %) article) (articles))))
+  (first (filter #(= (:german %) article) (articles))))
 
 (defn article->prep-article [article]
-  (assoc article :name (get article :as-preposition)))
+  (assoc article :german (get article :as-preposition)))
 
 (def tenses #{:present :past-perfect})
-(def ist {:name "ist" :english "is"})
+(def ist {:german "ist" :english "is"})
 
 (defn nouns-for-chapter [chapter]
   (into [] (filter #(and (noun? %) (chapter? % chapter)) dictionary/german)))

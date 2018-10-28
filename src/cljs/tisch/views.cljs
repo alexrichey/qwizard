@@ -11,15 +11,15 @@
 ;; sentence structure
 (defn word [word]
   (let [class (if (german/article? word)
-                (utils/article->gender (:name word))
+                (utils/article->gender (:german word))
                 nil)]
-    [:span {:key (utils/rand-str) :class class} (:name word)]))
+    [:span {:key (utils/rand-str) :class class} (:german word)]))
 
 (defn english-word [word]
   [:span {:key (utils/rand-str)} (:english word)])
 
 (defn phrase [words]
-  (let [with-spaces (interpose {:name " "} words)]
+  (let [with-spaces (interpose {:german " "} words)]
     [:div {:key (utils/rand-str)} (map word with-spaces)]))
 
 (defn prepositions []
@@ -38,7 +38,7 @@
   (map nav-unit-button units))
 
 (defn article-drill-phrase [words show-answers]
-  (let [with-spaces (interpose {:name " "} words)]
+  (let [with-spaces (interpose {:german " "} words)]
     [:div {:key (utils/rand-str)}
      (english-word (second words))
 
@@ -70,7 +70,7 @@
   (let [drills (re-frame/subscribe [::subs/vocab-drills])]
     [:div {}
      [:div {} (map
-               (fn [x] [:div {:key (utils/rand-str)} (str (:article x) " " (:name x))])
+               (fn [x] [:div {:key (utils/rand-str)} (str (:article x) " " (:german x))])
                (:vocab @drills))]]))
 
 
