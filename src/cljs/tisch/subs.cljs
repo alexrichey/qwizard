@@ -11,5 +11,8 @@
 (re-frame/reg-sub ::vocab-drills (fn [db] (:vocab-drills (:units db))))
 (re-frame/reg-sub ::article-drills (fn [db] (:articles-drill (:units db))))
 
+;; drills!
+(re-frame/reg-sub ::drills (fn [db] (:drills (:units db))))
+
 
 

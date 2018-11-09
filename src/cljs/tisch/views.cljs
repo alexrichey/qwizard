@@ -5,14 +5,17 @@
    [tisch.subs :as subs]
    [tisch.dictionary :as dictionary]
    [tisch.german :as german]
+   [tisch.units.drills :as drills-helper]
    [tisch.utils :as utils]
-   [tisch.lang :as lang]))
+   [tisch.views.language :as language]
+   [tisch.views.templates :as templates]
+   [tisch.lang :as lang]
+   [tisch.units.drills :as drills]
+   [tisch.questions :as questions]))
 
 ;; sentence structure
 (defn word [word]
-  (let [class (if (german/article? word)
-                (utils/article->gender (:german word))
-                nil)]
+  (let [class (if (german/article? word) (utils/article->gender (:german word)) nil)]
     [:span {:key (utils/rand-str) :class class} (:german word)]))
 
 (defn english-word [word]
@@ -47,6 +50,24 @@
      " "
      (if show-answers (word (second words)))]))
 
+(defn drills []
+  (let [unit  (re-frame/subscribe [::subs/drills])]
+    [:div {:class "articles-drill"}
+     [:input {:type :number
+              :value (:chapter-filter @unit)
+              :onChange (fn [e] (let [num (.-value (.-currentTarget e))]
+                                  (re-frame.core/dispatch [:chapter-filter-num-change num])))}]
+     [:div {} (str "Question " (drills-helper/get-current-question-num @unit)
+                   " Out of "  (drills-helper/get-total-questions @unit))]
+
+     [:div {} (let [question (drills-helper/get-current-question @unit)
+                    phrase (if (drills/show-answers? @unit)
+                                         (questions/get-answer question)
+                                         (questions/get-question question))]
+                (language/phrasex phrase))]
+     ;; [:div {} (str @unit)]
+     ]))
+
 (defn articles-drill []
   (let [dictionary  dictionary/german
         unit  (re-frame/subscribe [::subs/article-drills])
@@ -57,7 +78,7 @@
      [:input {:type :number
               :value (:chapter-filter @unit)
               :onChange (fn [e] (let [num (.-value (.-currentTarget e))]
-                                  (re-frame.core/dispatch [:chapter-filter-num-change num])))} ]
+                                  (re-frame.core/dispatch [:chapter-filter-num-change num])))}]
      [:div {} (str "total words: " (count nouns))]
      [:button {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answers"]
      [:button {:onClick #(re-frame.core/dispatch [:previous-question])} "previous!"]
@@ -87,5 +108,8 @@
       (case current-unit-key
         :vocab-drills (vocab-drills)
         :articles-drill (articles-drill)
-        :preposition-phrases (prepositions))]]))
-;;(re-frame.core/dispatch [:init-vocab-drills {}])
+        :drills (drills)
+        :preposition-phrases (prepositions)
+        :templates (templates/random-phrase (:show-answers? current-unit))
+        [:div {} "---- no unit spec'd -----"])]])) 
+

@@ -1,12 +1,15 @@
 (ns tisch.db
   (:require [tisch.dictionary :as dictionary]
+            [tisch.units.drills :as drills]
             [tisch.german :as german]))
 
 (def default-db
-  {:name "re-frame"
-   :current-unit :preposition-phrases
+  {:name "Der Tisch"
+   :current-unit :drills
    :units {:preposition-phrases {:name "Prepositional Phrases"}
            :articles-drill      {:name "Articles drilling" :show-answers false :vocab [{:name "Initial"}]}
+           :drills              (drills/create)
+           :templates           {:name "Templates" :show-answers false :templates [{:name "Initial"}]}
            :vocab-drills        {:name "Vocab Drills!"}}
    :unit-states {}})
 
@@ -23,8 +26,7 @@
        (assoc :current-unit :articles-drill)
        (assoc-in [:units :articles-drill :vocab] nouns)
        (assoc-in [:units :articles-drill :current-word-index] 0)
-       (assoc-in [:units :articles-drill :current-word] (first nouns))
-       )))
+       (assoc-in [:units :articles-drill :current-word] (first nouns)))))
 
 (defn set-chapter-filter [db chapter]
   (if (not (some? chapter))
@@ -70,11 +72,12 @@
 
 (defn handle-keypress [db key]
   (let [unit-key (:current-unit db)]
-   (case unit-key
-     :articles-drill (case key
-                       :right (articles-drill-next-question db)
-                       :left (articles-drill-previous-question db)
-                       :up (toggle-show-answers db)
-                       :down (toggle-show-answers db)
-                       db)
-     db)))
+    (case unit-key
+      :drills (update-in db [:units :drills] #(drills/handle-keypress % key))
+      :articles-drill (case key
+                        :right (articles-drill-next-question db)
+                        :left (articles-drill-previous-question db)
+                        :up (toggle-show-answers db)
+                        :down (toggle-show-answers db)
+                        db)
+      db)))

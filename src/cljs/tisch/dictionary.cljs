@@ -5,8 +5,7 @@
    ;; Chapter 15 Verbs
    {:german "danken" :english "to thank" :past-perfect "gedankt" :chapter 15 :type :verb}
    {:german "fehlen" :english "to miss (missing)" :past-perfect "gefehlt" :chapter 15 :type :verb}
-   {:german "gehören" :english "to belong" :past-perfect "gehört" :chapter 15 :type :verb}
-   {:german "gehören" :english "to belong" :past-perfect "gehört" :chapter 15 :type :verb}
+   {:german "gehören" :english "to belong to" :past-perfect "gehört" :chapter 15 :type :verb}
 
    ;; Chapter 15 Adjectives
    {:german "wichtig" :english "important" :chapter 15 :type :adjective}
@@ -111,6 +110,11 @@
    {:german "er" :english "He" :type :noun :basic-subject? true}
    {:german "sie" :english "She" :type :noun :basic-subject? true}
    {:german "sie" :english "She" :type :noun :basic-subject? true}
+
+   ;; tenses
+   {:german "prasent" :english "present" :type :tense}
+   {:german "perfekt" :english "perfect" :type :tense}
+   {:german "past?"   :english "past"    :type :tense}
 
    ;; prepositions
    {:german "neben"    :english "near to" :type :preposition}
