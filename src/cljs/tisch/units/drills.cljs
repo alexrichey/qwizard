@@ -2,8 +2,8 @@
   (:require [tisch.questions :as questions]
             [tisch.german :as german]))
 
-(defn create []
-  {:name "Drills of many sorts!"
+(defn create [name]
+  {:name name
    :show-answers false
    :question-number 0 ;; note: this is not 0 indexed
    :questions []})
@@ -30,7 +30,8 @@
   (assoc unit :question-number (count (:questions unit))))
 
 (defn next-question [unit]
-  (if (< (:question-number unit) (count (:questions unit)))
+  (if (< (:question-number unit)
+         (count (:questions unit)))
     (update unit :question-number inc)
     (-> unit
         (update :questions conj (questions/random-basic-verb-phrase))

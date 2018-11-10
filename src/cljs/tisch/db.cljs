@@ -6,11 +6,7 @@
 (def default-db
   {:name "Der Tisch"
    :current-unit :drills
-   :units {:preposition-phrases {:name "Prepositional Phrases"}
-           :articles-drill      {:name "Articles drilling" :show-answers false :vocab [{:name "Initial"}]}
-           :drills              (drills/create)
-           :templates           {:name "Templates" :show-answers false :templates [{:name "Initial"}]}
-           :vocab-drills        {:name "Vocab Drills!"}}
+   :units {:drills (drills/create "Drills of Many Sorts!")}
    :unit-states {}})
 
 (defn init-vocab-drills [db]
@@ -19,14 +15,6 @@
         (assoc :current-unit :vocab-drills)
         (assoc-in [:unit-states :vocab-drills] {:vocab nouns})
         (assoc-in [:unit-states :vocab-drills :current-word] "Hi there"))))
-
-(defn init-articles-drill [db]
-  (let [nouns (shuffle (german/nouns))]
-    (-> db
-       (assoc :current-unit :articles-drill)
-       (assoc-in [:units :articles-drill :vocab] nouns)
-       (assoc-in [:units :articles-drill :current-word-index] 0)
-       (assoc-in [:units :articles-drill :current-word] (first nouns)))))
 
 (defn set-chapter-filter [db chapter]
   (if (not (some? chapter))
@@ -41,7 +29,6 @@
 (defn change-unit [db unit-key]
   (case unit-key
     :vocab-drills (init-vocab-drills db)
-    :articles-drill (init-articles-drill db)
     (assoc db :current-unit unit-key)))
 
 (defn get-unit [unit-key db]
@@ -50,34 +37,8 @@
 (defn units-as-list [units]
   (into [] (map #(assoc (second %) :key (first %)) units)))
 
-(defn toggle-show-answers [db]
-  (update-in db [:units :articles-drill :show-answers] not))
-
-(defn articles-drill-next-question [db]
-  (let [vocab                      (:vocab (:articles-drill (:units db)))
-        current-index (:current-word-index (:articles-drill (:units db)))
-        next-index (mod (inc current-index) (count vocab))
-        shuffle-words? (= next-index 0)]
-    (-> db
-        (assoc-in [:units :articles-drill :current-word-index] next-index)
-        (update-in [:units :articles-drill :vocab] (if shuffle-words? shuffle identity)))))
-
-
-(defn articles-drill-previous-question [db]
-  (let [vocab                      (:vocab (:articles-drill (:units db)))
-        current-index (:current-word-index (:articles-drill (:units db)))
-        prev-index (mod (dec current-index) (count vocab))]
-    (-> db
-        (assoc-in [:units :articles-drill :current-word-index] prev-index))))
-
 (defn handle-keypress [db key]
   (let [unit-key (:current-unit db)]
     (case unit-key
       :drills (update-in db [:units :drills] #(drills/handle-keypress % key))
-      :articles-drill (case key
-                        :right (articles-drill-next-question db)
-                        :left (articles-drill-previous-question db)
-                        :up (toggle-show-answers db)
-                        :down (toggle-show-answers db)
-                        db)
       db)))

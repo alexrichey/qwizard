@@ -13,24 +13,6 @@
    [tisch.units.drills :as drills]
    [tisch.questions :as questions]))
 
-;; sentence structure
-(defn word [word]
-  (let [class (if (german/article? word) (utils/article->gender (:german word)) nil)]
-    [:span {:key (utils/rand-str) :class class} (:german word)]))
-
-(defn english-word [word]
-  [:span {:key (utils/rand-str)} (:english word)])
-
-(defn phrase [words]
-  (let [with-spaces (interpose {:german " "} words)]
-    [:div {:key (utils/rand-str)} (map word with-spaces)]))
-
-(defn prepositions []
-  (let [dictionary dictionary/german
-        phrases (doall (take 10 (repeatedly #(lang/make-preposition-phrase))))]
-    (map phrase phrases)))
-
-
 ;; nav
 (defn nav-unit-button [unit]
   [:button {:key (:key unit)
@@ -39,16 +21,6 @@
 
 (defn nav [units]
   (map nav-unit-button units))
-
-(defn article-drill-phrase [words show-answers]
-  (let [with-spaces (interpose {:german " "} words)]
-    [:div {:key (utils/rand-str)}
-     (english-word (second words))
-
-     (if show-answers "      -> ")
-     (if show-answers (word (first words)))
-     " "
-     (if show-answers (word (second words)))]))
 
 (defn drills []
   (let [unit  (re-frame/subscribe [::subs/drills])]
@@ -83,7 +55,7 @@
      [:button {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answers"]
      [:button {:onClick #(re-frame.core/dispatch [:previous-question])} "previous!"]
      [:button {:onClick #(re-frame.core/dispatch [:next-question])} "next!"]
-     [:div {} (article-drill-phrase current-word-with-article (:show-answers @unit))]
+     ;; [:div {} (article-drill-phrase current-word-with-article (:show-answers @unit))]
      ;; [:div {} (str @unit)]
      ]))
 
@@ -106,10 +78,6 @@
      [:div {:tab-index 0 :on-key-down (fn [e] (let [keycode (.-keyCode e)]
                                                  (re-frame.core/dispatch [:keypress keycode])))}
       (case current-unit-key
-        :vocab-drills (vocab-drills)
-        :articles-drill (articles-drill)
         :drills (drills)
-        :preposition-phrases (prepositions)
-        :templates (templates/random-phrase (:show-answers? current-unit))
         [:div {} "---- no unit spec'd -----"])]])) 
 
