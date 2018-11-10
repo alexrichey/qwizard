@@ -1,13 +1,12 @@
 (ns tisch.views.language
-  (:require
-   [re-frame.core :as re-frame]
-   [tisch.german.helpers :as german]
-   [tisch.utils :as utils]
-   [tisch.german.questions :as questions]))
+  (:require [re-frame.core :as re-frame]
+            [tisch.german.helpers :as german]
+            [tisch.units.question-templates :as questions]
+            [tisch.utils :as utils]))
 
 (def SPC {:word " " :raw? true})
 
-(defn word [word language]
+(defn display-phrase-word [word language]
   (let [class (if (german/article? word) (german/article->gender (:german word)) nil)]
     [:span {:key (utils/rand-str) :class class}
      (if (:raw? word)
@@ -17,7 +16,12 @@
 (defn phrase
   ([words]
    (let [with-spaces (interpose SPC words)]
-     [:div {:key (utils/rand-str)} (map #(word % (:display %)) with-spaces)]))
+     [:div {:key (utils/rand-str)} (map #(display-phrase-word % (:display %)) with-spaces)]))
   ([words language]
    (let [with-spaces (interpose SPC words)]
-     [:div {:key (utils/rand-str)} (map #(word % language) with-spaces)])))
+     [:div {:key (utils/rand-str)} (map #(display-phrase-word % language) with-spaces)])))
+
+
+(let [rand-word (rand-nth tisch.german.dictionary/german)
+      dis-word {}]
+  )

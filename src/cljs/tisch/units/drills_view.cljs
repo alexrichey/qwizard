@@ -1,14 +1,10 @@
 (ns tisch.units.drills-view
-  (:require
-   [reagent.core :as r]
-   [tisch.utils :as utils]
-   [tisch.german.helpers :as german]
-   [tisch.german.questions :as questions]
-   [tisch.german.dictionary :as dictionary]
-   [tisch.views.language :as language]
-   [tisch.units.drills :as drills]
-   [tisch.subs :as subs]
-   [re-frame.core :as re-frame]))
+  (:require [re-frame.core :as re-frame]
+            [reagent.core :as r]
+            [tisch.subs :as subs]
+            [tisch.units.drills :as unit]
+            [tisch.units.question-templates :as qts]
+            [tisch.views.language :as lang]))
 
 (defn button [name action params active?]
   [:button {:key name
@@ -20,7 +16,7 @@
   [:div {}
 
    [:div.btn-group
-    (into [] (map #(let [name (:name %)
+    (doall (map #(let [name (:name %)
                          action :set-drill-type
                          type (:type %)
                          active? (= (:type %) (:active-type @unit))]
@@ -29,7 +25,7 @@
 
    [:label {} "Chapter Select"]
    [:input {:type :number
-            :value (drills/chapter-filter @unit)
+            :value (unit/chapter-filter @unit)
             :onChange (fn [e] (let [num (.-value (.-currentTarget e))]
                                 (re-frame.core/dispatch [:chapter-filter-num-change num])))}
     ]])
@@ -43,9 +39,9 @@
      [:button {:onClick #(re-frame.core/dispatch [:next-question])} "next!"]
 
      [:div {} (str "Type: " (:active-type @unit))]
-     [:div {} (str "Question " (drills/get-current-question-num @unit)
-                   " Out of "  (drills/get-total-questions @unit))]
-     [:div {} (let [question (drills/get-current-question @unit)]
-                (language/phrase (if (drills/show-answers? @unit)
-                                   (questions/get-answer question)
-                                   (questions/get-question question))))]]))
+     [:div {} (str "Question " (unit/get-current-question-num @unit)
+                   " Out of "  (unit/get-total-questions @unit))]
+     [:div {} (let [question (unit/get-current-question @unit)]
+                (lang/phrase (if (unit/show-answers? @unit)
+                                   (qts/get-answer question)
+                                   (qts/get-question question))))]]))

@@ -1,6 +1,6 @@
 (ns tisch.units.drills
-  (:require [tisch.german.questions :as questions]
-            [tisch.german.helpers :as german]))
+  (:require [tisch.german.helpers :as german]
+            [tisch.units.question-templates :as questions]))
 
 (defn create [name]
   {:name name

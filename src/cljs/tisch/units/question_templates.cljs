@@ -1,4 +1,4 @@
-(ns tisch.german.questions
+(ns tisch.units.question-templates
   (:require [tisch.german.helpers :as german]))
 
 (defn verb-template [subject verb tense]
