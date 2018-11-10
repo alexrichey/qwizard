@@ -9,7 +9,6 @@
    [tisch.utils :as utils]
    [tisch.views.language :as language]
    [tisch.views.templates :as templates]
-   [tisch.lang :as lang]
    [tisch.units.drills :as drills]
    [tisch.questions :as questions]))
 

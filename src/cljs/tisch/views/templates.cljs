@@ -2,7 +2,7 @@
   (:require
    [re-frame.core :as re-frame]
    [tisch.german :as german]
-   [tisch.views.language :as lang]
+   [tisch.views.language :as lang-views]
    [tisch.questions :as questions]))
 
 (defn random-phrase [show-answer?]
@@ -10,5 +10,5 @@
         noun-q (questions/random-basic-noun-question)]
     [:div {}
      (if show-answer?
-       (lang/phrase (:question noun-q) :english)
-       (lang/phrase (:answer noun-q) :german))]))
+       (lang-views/phrase (:question noun-q) :english)
+       (lang-views/phrase (:answer noun-q) :german))]))

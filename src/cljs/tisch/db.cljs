@@ -6,15 +6,7 @@
 (def default-db
   {:name "Der Tisch"
    :current-unit :drills
-   :units {:drills (drills/create "Drills of Many Sorts!")}
-   :unit-states {}})
-
-(defn init-vocab-drills [db]
-  (let [nouns (shuffle (german/nouns))]
-    (-> db
-        (assoc :current-unit :vocab-drills)
-        (assoc-in [:unit-states :vocab-drills] {:vocab nouns})
-        (assoc-in [:unit-states :vocab-drills :current-word] "Hi there"))))
+   :units {:drills (drills/create "Drills of Many Sorts!")}})
 
 (defn set-chapter-filter [db chapter]
   (if (not (some? chapter))
@@ -28,7 +20,6 @@
 
 (defn change-unit [db unit-key]
   (case unit-key
-    :vocab-drills (init-vocab-drills db)
     (assoc db :current-unit unit-key)))
 
 (defn get-unit [unit-key db]

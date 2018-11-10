@@ -3,8 +3,7 @@
    [re-frame.core :as re-frame]
    [tisch.german :as german]
    [tisch.utils :as utils]
-   [tisch.questions :as questions]
-   [tisch.lang :as lang]))
+   [tisch.questions :as questions]))
 
 (defn word [word language]
   (let [class (if (german/article? word) (utils/article->gender (:german word)) nil)]
