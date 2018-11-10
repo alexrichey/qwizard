@@ -5,7 +5,7 @@
 (defn create [name]
   {:name name
    :show-answers false
-   :question-number 0 ;; note: this is not 0 indexed
+   :question-number 0 ;; note: this is 1-indexed
    :questions []})
 
 ;; getters
