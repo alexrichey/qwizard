@@ -4,11 +4,24 @@
 
 (defn create [name]
   {:name name
+   :drill-types [{:type :verbs :name "Verbs"}
+                 {:type :nouns :name "Nouns"}
+                 {:type :accusitive-nouns :name "Accusative Nouns"}]
+   :active-type :nouns
    :show-answers false
-   :question-number 0 ;; note: this is 1-indexed
+   :question-number 0 ;; note: this questions 1-indexed (ie the first question = question 1)
    :questions []})
 
+(defn get-question-for-type [type]
+  (case type
+    :nouns (questions/random-basic-noun-question)
+    :verbs (questions/random-basic-verb-phrase)
+    :accusitive-nouns (questions/random-basic-verb-phrase)))
+
 ;; getters
+(defn chapter-filter [unit]
+  (:chapter-filter unit))
+
 (defn show-answers? [unit]
   (:show-answers unit))
 
@@ -29,12 +42,25 @@
 (defn set-current-question-as-last [unit]
   (assoc unit :question-number (count (:questions unit))))
 
+(defn reset-questions [unit]
+  (-> unit
+      (assoc :show-answers false)
+      (assoc :questions [])
+      (assoc :question-number 0)))
+
+(defn set-active-type [unit type]
+  (if (not= (type (:active-type unit)))
+    unit
+    (-> unit
+        (assoc :active-type type)
+        reset-questions)))
+
 (defn next-question [unit]
   (if (< (:question-number unit)
          (count (:questions unit)))
     (update unit :question-number inc)
     (-> unit
-        (update :questions conj (questions/random-basic-verb-phrase))
+        (update :questions conj (get-question-for-type (:active-type unit)))
         (assoc :show-answers false)
         set-current-question-as-last)))
 
@@ -52,3 +78,7 @@
     :up (toggle-show-answers unit)
     :down (toggle-show-answers unit)
     unit))
+
+(defn set-chapter-filter [unit chapter]
+  (print "hi")
+  (assoc unit :chapter-filter chapter))

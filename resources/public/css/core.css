@@ -16,3 +16,7 @@
   border-color: black;
   border-width: 1px;
 }
+
+button.active {
+  background: violet;
+}

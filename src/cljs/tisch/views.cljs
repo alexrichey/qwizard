@@ -2,11 +2,13 @@
   (:require
    [re-frame.core :as re-frame]
    [tisch.db :as db]
+   [reagent.core :as r]
    [tisch.subs :as subs]
    [tisch.views.nav :as nav]
    [tisch.units.drills-view :as drills-view]))
 
 (defn main-panel []
+  (print "rerendering all")
   (let [current-unit-key @(re-frame/subscribe [::subs/current-unit])
         units (re-frame/subscribe [::subs/units])
         current-unit (get @units current-unit-key)]
@@ -18,5 +20,5 @@
                                                  (re-frame.core/dispatch [:keypress keycode])))}
       (case current-unit-key
         :drills (drills-view/main)
-        [:div {} "---- no unit spec'd -----"])]])) 
+        [:div {} "---- no unit spec'd -----"])]]))
 
