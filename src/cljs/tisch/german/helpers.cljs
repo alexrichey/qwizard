@@ -1,5 +1,5 @@
-(ns tisch.german
-  (:require [tisch.dictionary :as dictionary]))
+(ns tisch.german.helpers
+  (:require [tisch.german.dictionary :as dictionary]))
 
 ;; filters
 (defn article? [word]
@@ -61,3 +61,16 @@
 
 (defn nouns-for-chapter [chapter]
   (into [] (filter #(and (noun? %) (chapter? % chapter)) dictionary/german)))
+
+(defn article->gender [article]
+  (case (str article)
+    "der" "masc"
+    "den" "masc"
+    "die" "fem"
+    "das" "neutral"))
+
+(defn singular-article->prep-article [article]
+  (case (str article)
+    "der" "den"
+    "die" "die"
+    "das" "das"))

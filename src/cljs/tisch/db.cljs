@@ -1,7 +1,7 @@
 (ns tisch.db
-  (:require [tisch.dictionary :as dictionary]
+  (:require [tisch.german.dictionary :as dictionary]
             [tisch.units.drills :as drills]
-            [tisch.german :as german]))
+            [tisch.german.helpers :as german]))
 
 (def default-db
   {:name "Der Tisch"

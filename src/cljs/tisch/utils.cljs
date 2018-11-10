@@ -1,20 +1,9 @@
 (ns tisch.utils)
 
-(defn article->gender [article]
-  (case (str article)
-    "der" "masc"
-    "den" "masc"
-    "die" "fem"
-    "das" "neutral"))
-
 (defn word-list->phrase [list]
   (apply str (interpose " " list)))
 
-(defn singular-article->prep-article [article]
-  (case (str article)
-    "der" "den"
-    "die" "die"
-    "das" "das"))
+
 
 (def articles #{"der" "die" "das" "den"})
 

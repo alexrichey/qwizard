@@ -1,12 +1,12 @@
 (ns tisch.views.language
   (:require
    [re-frame.core :as re-frame]
-   [tisch.german :as german]
+   [tisch.german.helpers :as german]
    [tisch.utils :as utils]
-   [tisch.questions :as questions]))
+   [tisch.german.questions :as questions]))
 
 (defn word [word language]
-  (let [class (if (german/article? word) (utils/article->gender (:german word)) nil)]
+  (let [class (if (german/article? word) (german/article->gender (:german word)) nil)]
     [:span {:key (utils/rand-str) :class class}
      (if (:raw? word)
        (str (:word word))
@@ -23,7 +23,7 @@
 
 ;; old
 ;; (defn word [word]
-;;   (let [class (if (german/article? word) (utils/article->gender (:german word)) nil)]
+;;   (let [class (if (german/article? word) (german/article->gender (:german word)) nil)]
 ;;     [:span {:key (utils/rand-str) :class class} (:german word)]))
 
 ;; (defn english-word [word]

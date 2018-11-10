@@ -3,14 +3,14 @@
    [re-frame.core :as re-frame]
    [tisch.db :as db]
    [tisch.subs :as subs]
-   [tisch.dictionary :as dictionary]
-   [tisch.german :as german]
+   [tisch.german.dictionary :as dictionary]
+   [tisch.german.helpers :as german]
    [tisch.units.drills :as drills-helper]
    [tisch.utils :as utils]
    [tisch.views.language :as language]
    [tisch.views.templates :as templates]
    [tisch.units.drills :as drills]
-   [tisch.questions :as questions]))
+   [tisch.german.questions :as questions]))
 
 ;; nav
 (defn nav-unit-button [unit]
