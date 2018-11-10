@@ -3,15 +3,8 @@
    [re-frame.core :as re-frame]
    [tisch.db :as db]
    [tisch.subs :as subs]
-   [tisch.german.dictionary :as dictionary]
-   [tisch.german.helpers :as german]
-   [tisch.utils :as utils]
    [tisch.views.nav :as nav]
-   [tisch.views.language :as language]
-   [tisch.views.templates :as templates]
-   [tisch.units.drills :as drills]
-   [tisch.units.drills-view :as drills-view]
-   [tisch.german.questions :as questions]))
+   [tisch.units.drills-view :as drills-view]))
 
 (defn main-panel []
   (let [current-unit-key @(re-frame/subscribe [::subs/current-unit])
