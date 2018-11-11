@@ -6,22 +6,24 @@
 
 (def SPC {:word " " :raw? true})
 
-(defn display-phrase-word [word language]
-  (let [class (if (german/article? word) (german/article->gender (:german word)) nil)]
+(defn display-template-word [template-word]
+  (let [word (:word template-word)
+        class (if (german/article? word)
+                (german/article->gender (:german word))
+                nil)]
     [:span {:key (utils/rand-str) :class class}
-     (if (:raw? word)
-       (str (:word word))
-       (str (get-in word [:word language])))]))
+     (if (:raw? template-word)
+       (str (:word template-word))
+       (let [language (:display template-word)]
+        (str (get-in template-word [:word language]))))]))
 
-(defn phrase
-  ([words]
-   (let [with-spaces (interpose SPC words)]
-     [:div {:key (utils/rand-str)} (map #(display-phrase-word % (:display %)) with-spaces)]))
-  ([words language]
-   (let [with-spaces (interpose SPC words)]
-     [:div {:key (utils/rand-str)} (map #(display-phrase-word % language) with-spaces)])))
+(defn phrase [template-words]
+  (let [with-spaces (interpose SPC template-words)]
+    [:div {:key (utils/rand-str)}
+     (doall (map #(display-template-word %) with-spaces))]))
 
 
-(let [rand-word (rand-nth tisch.german.dictionary/german)
-      dis-word {}]
-  )
+(let [q (tisch.units.question-templates/random-basic-noun-question)
+      f (first (:answer q))
+      s (second (:answer q))]
+  (:word f))

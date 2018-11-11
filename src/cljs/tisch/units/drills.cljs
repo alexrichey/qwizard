@@ -81,4 +81,6 @@
 
 (defn set-chapter-filter [unit chapter]
   (print "hi")
-  (assoc unit :chapter-filter chapter))
+  (-> unit
+      reset-questions
+      (assoc :chapter-filter chapter)))

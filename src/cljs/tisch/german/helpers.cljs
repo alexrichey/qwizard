@@ -67,10 +67,12 @@
     "der" "masc"
     "den" "masc"
     "die" "fem"
-    "das" "neutral"))
+    "das" "neutral"
+    nil))
 
 (defn singular-article->prep-article [article]
   (case (str article)
     "der" "den"
     "die" "die"
-    "das" "das"))
+    "das" "das"
+    ""))
