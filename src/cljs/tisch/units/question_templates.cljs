@@ -33,5 +33,6 @@
    :answer   [{:word (german/article-for noun) :display :german}
               {:word noun :display :german}]})
 
-(defn random-basic-noun-question []
-  (nouns-with-article-template (rand-nth (german/nouns))))
+(defn random-basic-noun-question
+  ([]        (nouns-with-article-template (rand-nth (german/nouns))))
+  ([chapter] (nouns-with-article-template (rand-nth (german/nouns-for-chapter chapter)))))

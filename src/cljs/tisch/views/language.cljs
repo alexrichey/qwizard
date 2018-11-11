@@ -21,9 +21,3 @@
   (let [with-spaces (interpose SPC template-words)]
     [:div {:key (utils/rand-str)}
      (doall (map #(display-template-word %) with-spaces))]))
-
-
-(let [q (tisch.units.question-templates/random-basic-noun-question)
-      f (first (:answer q))
-      s (second (:answer q))]
-  (:word f))

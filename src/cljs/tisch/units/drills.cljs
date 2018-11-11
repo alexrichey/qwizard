@@ -9,18 +9,22 @@
                  {:type :accusitive-nouns :name "Accusative Nouns"}]
    :active-type :nouns
    :show-answers false
+   :chapter-filter nil
    :question-number 0 ;; note: this questions 1-indexed (ie the first question = question 1)
    :questions []})
 
-(defn get-question-for-type [type]
-  (case type
-    :nouns (questions/random-basic-noun-question)
+(defn chapter-filter [unit]
+  (:chapter-filter unit))
+
+(defn get-question-for-type [unit]
+  (case (:active-type unit)
+    :nouns (if (some? (chapter-filter unit))
+             (questions/random-basic-noun-question (chapter-filter unit))
+             (questions/random-basic-noun-question))
     :verbs (questions/random-basic-verb-phrase)
     :accusitive-nouns (questions/random-basic-verb-phrase)))
 
 ;; getters
-(defn chapter-filter [unit]
-  (:chapter-filter unit))
 
 (defn show-answers? [unit]
   (:show-answers unit))
@@ -60,7 +64,7 @@
          (count (:questions unit)))
     (update unit :question-number inc)
     (-> unit
-        (update :questions conj (get-question-for-type (:active-type unit)))
+        (update :questions conj (get-question-for-type unit))
         (assoc :show-answers false)
         set-current-question-as-last)))
 
