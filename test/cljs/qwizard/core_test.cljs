@@ -1,4 +1,4 @@
-(ns tisch.core-test
+(ns cljs.qwizard.core-test
   (:require [cljs.test :refer-macros [deftest is testing]]
             [qwizard.core :as core]))
 
