@@ -1,4 +1,4 @@
-(ns tisch.subs
+(ns qwizard.subs
   (:require
    [re-frame.core :as re-frame]))
 

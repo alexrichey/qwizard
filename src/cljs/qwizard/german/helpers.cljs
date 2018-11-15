@@ -1,5 +1,5 @@
-(ns tisch.german.helpers
-  (:require [tisch.german.dictionary :as dictionary]))
+(ns qwizard.german.helpers
+  (:require [qwizard.german.dictionary :as dictionary]))
 
 ;; filters
 (defn article? [word]

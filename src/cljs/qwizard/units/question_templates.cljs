@@ -1,5 +1,5 @@
-(ns tisch.units.question-templates
-  (:require [tisch.german.helpers :as german]))
+(ns qwizard.units.question-templates
+  (:require [qwizard.german.helpers :as german]))
 
 (defn verb-template [subject verb tense]
   {:question [{:word "subject: " :raw? true} {:word subject :display :german}

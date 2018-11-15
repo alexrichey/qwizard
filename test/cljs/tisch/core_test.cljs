@@ -1,6 +1,6 @@
 (ns tisch.core-test
-  (:require [cljs.test :refer-macros [deftest testing is]]
-            [tisch.core :as core]))
+  (:require [cljs.test :refer-macros [deftest is testing]]
+            [qwizard.core :as core]))
 
 (deftest fake-test
   (testing "fake description"

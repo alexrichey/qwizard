@@ -1,10 +1,10 @@
-(ns tisch.units.drills-view
-  (:require [re-frame.core :as re-frame]
-            [reagent.core :as r]
-            [tisch.subs :as subs]
-            [tisch.units.drills :as unit]
-            [tisch.units.question-templates :as qts]
-            [tisch.views.language :as lang]))
+(ns qwizard.units.drills-view
+  (:require [qwizard.subs :as subs]
+            [qwizard.units.drills :as unit]
+            [qwizard.units.question-templates :as qts]
+            [qwizard.views.language :as lang]
+            [re-frame.core :as re-frame]
+            [reagent.core :as r]))
 
 (defn button [name action params active?]
   [:button {:key name

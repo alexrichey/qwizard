@@ -1,11 +1,10 @@
-(ns tisch.views
-  (:require
-   [re-frame.core :as re-frame]
-   [tisch.db :as db]
-   [reagent.core :as r]
-   [tisch.subs :as subs]
-   [tisch.views.nav :as nav]
-   [tisch.units.drills-view :as drills-view]))
+(ns qwizard.views
+  (:require [qwizard.db :as db]
+            [qwizard.subs :as subs]
+            [qwizard.units.drills-view :as drills-view]
+            [qwizard.views.nav :as nav]
+            [re-frame.core :as re-frame]
+            [reagent.core :as r]))
 
 (defn main-panel []
   (let [current-unit-key @(re-frame/subscribe [::subs/current-unit])

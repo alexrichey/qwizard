@@ -1,4 +1,4 @@
-(ns tisch.utils)
+(ns qwizard.utils)
 
 (defn rand-str []
   (apply str (take 8 (repeatedly #(char (+ (rand 26) 65))))))

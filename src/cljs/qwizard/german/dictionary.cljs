@@ -1,4 +1,4 @@
-(ns tisch.german.dictionary)
+(ns qwizard.german.dictionary)
 
 (def german
   [

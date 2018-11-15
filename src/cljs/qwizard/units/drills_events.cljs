@@ -1,9 +1,8 @@
-(ns tisch.units.drills-events
-  (:require
-   [re-frame.core :as re-frame]
-   [tisch.utils :as utils]
-   [tisch.units.drills :as drills]
-   [tisch.db :as db]))
+(ns qwizard.units.drills-events
+  (:require [qwizard.db :as db]
+            [qwizard.units.drills :as drills]
+            [qwizard.utils :as utils]
+            [re-frame.core :as re-frame]))
 
 (def DB-KEY [:units :drills])
 

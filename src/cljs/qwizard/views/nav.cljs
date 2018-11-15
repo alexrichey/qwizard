@@ -1,4 +1,4 @@
-(ns tisch.views.nav)
+(ns qwizard.views.nav)
 
 (defn nav-unit-button [unit]
   [:button {:key (:key unit)

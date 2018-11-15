@@ -1,8 +1,8 @@
-(ns tisch.views.language
-  (:require [re-frame.core :as re-frame]
-            [tisch.german.helpers :as german]
-            [tisch.units.question-templates :as questions]
-            [tisch.utils :as utils]))
+(ns qwizard.views.language
+  (:require [qwizard.german.helpers :as german]
+            [qwizard.units.question-templates :as questions]
+            [qwizard.utils :as utils]
+            [re-frame.core :as re-frame]))
 
 (def SPC {:word " " :raw? true})
 

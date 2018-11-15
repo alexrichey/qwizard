@@ -1,9 +1,8 @@
-(ns tisch.events
-  (:require
-   [re-frame.core :as re-frame]
-   [tisch.utils :as utils]
-   [tisch.units.drills-events :as drills-events]
-   [tisch.db :as db]))
+(ns qwizard.events
+  (:require [qwizard.db :as db]
+            [qwizard.units.drills-events :as drills-events]
+            [qwizard.utils :as utils]
+            [re-frame.core :as re-frame]))
 
 (defn change-unit [coeffects event]
   (let [unit-key (second event)

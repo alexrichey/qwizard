@@ -1,12 +1,9 @@
-(ns tisch.core
-  (:require
-   [reagent.core :as reagent]
-   [re-frame.core :as re-frame]
-   [tisch.events :as events]
-   [tisch.views :as views]
-   [tisch.config :as config]
-   ))
-
+(ns qwizard.core
+  (:require [qwizard.config :as config]
+            [qwizard.events :as events]
+            [qwizard.views :as views]
+            [re-frame.core :as re-frame]
+            [reagent.core :as reagent]))
 
 (defn dev-setup []
   (when config/debug?
