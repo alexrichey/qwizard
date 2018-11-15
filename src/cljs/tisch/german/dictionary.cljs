@@ -2,6 +2,51 @@
 
 (def german
   [
+   ;; Chapter 17
+   {:german "" :article "" :plural "" :english "" :chapter 17 :type :noun}
+
+   
+   ;; Chapter 17
+   {:german "Pflaster" :article "das" :plural "-n" :english "Ointment" :chapter 17 :type :noun}
+   {:german "Salbe" :article "die" :plural "-n" :english "Ointment" :chapter 17 :type :noun}
+   {:german "Tablette" :article "die" :plural "-n" :english "Tablet" :chapter 17 :type :noun}
+   {:german "Schmerzen" :article "die" :is-plural true :english "Pain" :chapter 17 :type :noun}
+   {:german "Schnupfen" :article "der" :plural "-" :english "Cold (Sickness)" :chapter 17 :type :noun}
+   {:german "Fieber" :article "das" :plural "-" :english "Fever" :chapter 17 :type :noun}
+   {:german "Husten" :article "der" :english "Coughing Fit" :chapter 17 :type :noun}
+   {:german "Praxis" :article "die" :english "Pratice (noun)" :chapter 17 :type :noun}
+   {:german "Medikamente" :article "diek" :is-plural true :english "Medication" :chapter 17 :type :noun}
+   {:german "Apotheke" :article "die" :plural "-n" :english "Pharmacy" :chapter 17 :type :noun}
+   {:german "Doktor" :article "der" :plural "-en" :english "Doctor" :chapter 17 :type :noun}
+   {:german "Arzt" :article "der" :plural "Ärzte" :english "Doctor" :chapter 17 :type :noun}
+
+   ;; Chapter 16
+   {:german "Wasser" :article "das" :plural "-" :english "Water" :chapter 16 :type :noun}
+   {:german "Dusche" :article "die" :plural "-n" :english "Shower" :chapter 16 :type :noun}
+   {:german "Telefon" :article "das" :plural "-e" :english "Phone (not handy)" :chapter 16 :type :noun}
+   {:german "Wecker" :article "der" :plural "-" :english "Alarm Clock" :chapter 16 :type :noun}
+   {:german "Föhn" :article "der" :plural "?" :english "Hairdryer" :chapter 16 :type :noun}
+   {:german "Bademantel" :article "der" :plural "der" :english "Bathrobe" :chapter 16 :type :noun}
+   {:german "Handtuch" :article "das" :plural "Handtücher" :english "Hand Towel" :chapter 16 :type :noun}
+   {:german "Seife" :article "die" :plural "-n" :english "Soap" :chapter 16 :type :noun}
+   {:german "Licht" :article "das" :plural "-er" :english "Light" :chapter 16 :type :noun}
+   {:german "Internetverbindung" :article "die" :plural "-en" :english "Internet Connection" :chapter 16 :type :noun}
+   {:german "Radio" :article "das" :plural "-s" :english "Radio" :chapter 16 :type :noun}
+   {:german "Fernseher" :article "der" :plural "-" :english "TV" :chapter 16 :type :noun}
+   {:german "Heizung" :article "die" :plural "-en" :english "Heater" :chapter 16 :type :noun}
+   {:german "Klimaanlage" :article "die" :plural "-n" :english "Air Conditioner" :chapter 16 :type :noun}
+   {:german "Aufzug" :article "der" :plural "Aufzüge" :english "Elevator" :chapter 16 :type :noun}
+
+   ;; Chapter 16 Vocab
+   {:german "wichtig" :english "important"}
+   {:german "" :english ""}
+
+   ;; Chapter 16 Verbs
+   {:german "Vergleichen" :english "To Compare"}
+   {:german "Absagen" :english "To Cancel"}
+   {:german "Verschieben" :english "To Move" :for-example "To move a meeting"}
+   {:german "" :english ""}
+
    ;; Chapter 15 Verbs
    {:german "danken" :english "to thank" :past-perfect "gedankt" :chapter 15 :type :verb}
    {:german "fehlen" :english "to miss (missing)" :past-perfect "gefehlt" :chapter 15 :type :verb}
