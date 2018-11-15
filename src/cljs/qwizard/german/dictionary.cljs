@@ -3,19 +3,36 @@
 (def german
   [
    ;; Chapter 17
-   {:german "" :article "" :plural "" :english "" :chapter 17 :type :noun}
+   ;; {:german "" :article "" :plural "" :english "" :chapter 17 :type :noun}
 
-   
+   ;; Chapter 3
+   {:german "" :article "die" :plural "-n" :english "Language" :chapter 3 :type :noun}
+   {:german "Sprache" :article "die" :plural "-n" :english "Language" :chapter 3 :type :noun}
+   {:german "Geschwister" :article "die" :plural true :english "Siblings" :chapter 3 :type :noun}
+   {:german "Schwester" :article "die" :plural "-n" :english "Sister" :chapter 3 :type :noun}
+   {:german "Bruder" :article "der" :plural "Brüder" :english "Brother" :chapter 3 :type :noun}
+   {:german "Enkelin" :article "der" :plural "-nen" :english "Granddaughters" :chapter 3 :type :noun}
+   {:german "Großeltern" :article "die" :plural true :english "Grandparents" :chapter 3 :type :noun}
+   {:german "Großmutter" :article "die" :plural "großmütter" :english "Grandmother" :chapter 3 :type :noun}
+   {:german "Opa" :article "der" :plural "-s" :english "Grandfather" :chapter 3 :type :noun}
+   {:german "Großvater" :article "der" :plural "Großväter" :english "Grandfather" :chapter 3 :type :noun}
+   {:german "Tochter" :article "die" :plural "Töchter" :english "Daughter" :chapter 3 :type :noun}
+   {:german "Sohn" :article "der" :plural "-ë" :english "Son" :chapter 3 :type :noun}
+   {:german "Eltern" :article "die" :plural true :english "Parents" :chapter 3 :type :noun}
+   {:german "Mutter" :article "die" :plural "Mütter" :english "Mother" :chapter 3 :type :noun}
+   {:german "Familie" :article "die" :plural "-n" :english "Family" :chapter 3 :type :noun}
+   {:german "Vater" :article "der" :plural "Väter" :english "Father" :chapter 3 :type :noun}
+
    ;; Chapter 17
    {:german "Pflaster" :article "das" :plural "-n" :english "Ointment" :chapter 17 :type :noun}
    {:german "Salbe" :article "die" :plural "-n" :english "Ointment" :chapter 17 :type :noun}
    {:german "Tablette" :article "die" :plural "-n" :english "Tablet" :chapter 17 :type :noun}
-   {:german "Schmerzen" :article "die" :is-plural true :english "Pain" :chapter 17 :type :noun}
+   {:german "Schmerzen" :article "die" :plural true :english "Pain" :chapter 17 :type :noun}
    {:german "Schnupfen" :article "der" :plural "-" :english "Cold (Sickness)" :chapter 17 :type :noun}
    {:german "Fieber" :article "das" :plural "-" :english "Fever" :chapter 17 :type :noun}
    {:german "Husten" :article "der" :english "Coughing Fit" :chapter 17 :type :noun}
    {:german "Praxis" :article "die" :english "Pratice (noun)" :chapter 17 :type :noun}
-   {:german "Medikamente" :article "diek" :is-plural true :english "Medication" :chapter 17 :type :noun}
+   {:german "Medikamente" :article "die" :plural true :english "Medication" :chapter 17 :type :noun}
    {:german "Apotheke" :article "die" :plural "-n" :english "Pharmacy" :chapter 17 :type :noun}
    {:german "Doktor" :article "der" :plural "-en" :english "Doctor" :chapter 17 :type :noun}
    {:german "Arzt" :article "der" :plural "Ärzte" :english "Doctor" :chapter 17 :type :noun}
@@ -48,15 +65,18 @@
    {:german "" :english ""}
 
    ;; Chapter 15 Verbs
+   {:german "bedeuten" :english "to mean" :past-perfect "" :chapter 15 :type :verb}
    {:german "danken" :english "to thank" :past-perfect "gedankt" :chapter 15 :type :verb}
    {:german "fehlen" :english "to miss (missing)" :past-perfect "gefehlt" :chapter 15 :type :verb}
    {:german "gehören" :english "to belong to" :past-perfect "gehört" :chapter 15 :type :verb}
+   {:german "passen" :english "to fit" :chapter 15 :type :verb}
 
    ;; Chapter 15 Adjectives
    {:german "wichtig" :english "important" :chapter 15 :type :adjective}
-   {:german "wengi" :english "few / little" :chapter 15 :type :adjective}
+   {:german "wenige" :english "few / little" :chapter 15 :type :adjective}
 
    ;; Chapter 15 Vocab
+   {:german "Stadtviertel" :article "das" :plural "-" :english "District" :chapter 15 :type :noun}
    {:german "Wetter" :article "das" :plural "" :english "Weather" :chapter 15 :type :noun}
    {:german "Urlaub" :article "der" :plural "" :english "Vacation" :chapter 15 :type :noun}
    {:german "Rezept" :article "das" :plural "-e" :english "Recipe" :chapter 15 :type :noun}
@@ -129,9 +149,6 @@
    {:german "unten" :english "below" :chapter 14}
    {:german "vorn" :english "front" :chapter 14}
 
-   ;; Random
-   {:german "weitere" :english "Further" }
-   {:german "wichtige" :english "Important" :type :adjective}
 
    ;; previous Chapters
    {:german "Wortschatz"  :article "der" :plural "Wortschätze"  :english "Vocabulary" :chapter 14 :type :noun}
@@ -172,5 +189,27 @@
    {:german "in"       :english "in" :type :preposition}
    {:german "hinter"   :english "behind" :type :preposition}
    {:german "hinter"   :english "behind" :type :preposition}
+
+   ;; Random
+   {:german "abschied" :english "farewells" :tags #{:random}}
+   {:german "begrüßen" :english "welcome (greeting words)" :tags #{:random}}
+   {:german "ganz" :english "very/quite" :tags #{:random}}
+   {:german "ruhe" :english "quiet" :tags #{:random}}
+   {:german "dann" :english "then" :tags #{:random}}
+   {:german "weitere" :english "Further" :tags #{:random}}
+   {:german "wichtige" :english "Important" :type :adjective :tags #{:random}}
+   {:german "selbst" :english "self" :type :pronoun :tags #{:random}}
+
+   ;; Random Nouns
+   {:german "Sätze" :article "der" :plural "-" :english "Sentence" :type :noun}
+   {:german "Thema" :article "das" :plural "-n" :english "Topic" :type :noun}
+   {:german "Farbe" :article "die" :plural "-n" :english "Color" :type :noun}
+   {:german "Farbe" :article "die" :plural "-n" :english "Color" :type :noun}
+
+   ;; Random Verbs
+   {:german "lösen" :english "to solve"  :chapter 3 :type :verb :tags #{:random}}
+   {:german "fehlen" :english "to be absent"  :type :verb :tags #{:random}}
+   {:german "mischen" :english "to mix"  :type :verb :tags #{:random}}
+   {:german "raten" :english "to guess"  :type :verb :tags #{:random}}
 
    ])
