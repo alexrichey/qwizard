@@ -1,5 +1,6 @@
 (ns qwizard.units.question-templates
-  (:require [qwizard.german.helpers :as german]))
+  (:require [qwizard.german.helpers :as german]
+            [qwizard.german.phrases :as phrases]))
 
 (defn verb-template [subject verb tense]
   {:question [{:word "subject: " :raw? true} {:word subject :display :german}
@@ -26,6 +27,9 @@
         tense (rand-nth (german/tenses))]
     (verb-template subject verb tense)))
 
+(defn random-phrase-question []
+  (let [phrase (rand-nth phrases/all)]
+    {:question [{:word (:english phrase) :raw? true}] :answer [{:word (:german phrase) :raw? true}]}))
 
 (defn nouns-with-article-template [noun]
   {:question [{:word "The " :raw? true}

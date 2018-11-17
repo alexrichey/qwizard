@@ -6,6 +6,7 @@
   {:name name
    :drill-types [{:type :verbs :name "Verbs"}
                  {:type :nouns :name "Nouns"}
+                 {:type :phrases :name "Phrases"}
                  {:type :accusitive-nouns :name "Accusative Nouns"}]
    :active-type :nouns
    :show-answers false
@@ -22,6 +23,7 @@
              (questions/random-basic-noun-question (chapter-filter unit))
              (questions/random-basic-noun-question))
     :verbs (questions/random-basic-verb-phrase)
+    :phrases (questions/random-phrase-question)
     :accusitive-nouns (questions/random-basic-verb-phrase)))
 
 ;; getters
