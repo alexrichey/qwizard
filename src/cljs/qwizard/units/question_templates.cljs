@@ -32,28 +32,23 @@
               {:word noun :display :german}]})
 
 
-(defn generate [params]
-  "Params in the Form
-   {:question-type :nouns
-    :count 20
-    :shuffle? true
-    :chapter-filter (chapter-filter unit)}
-    TODO: Just use spec already..."
-  (case (:question-type params)
-    :nouns (let [query (if (some? (:chapter-filter params))
-                         [german/noun? #(german/chapter? % (:chapter-filter params))]
+(defn generate [{question-type :question-type
+                 shuffle? :shuffle?
+                 total-qs :count
+                 chapter-filter :chapter-filter}]
+  (case question-type
+    :nouns (let [query (if (some? chapter-filter)
+                         [german/noun? #(german/chapter? % chapter-filter)]
                          [german/noun?])
-                 nouns (take (:count params) (german/query query))
-                 final-nouns (if (:shuffle? params)
-                               (shuffle nouns)
-                               nouns)]
+                 nouns (take total-qs (german/query query))
+                 final-nouns (if shuffle? (shuffle nouns) nouns)]
              (into [] (map nouns-with-article-template final-nouns)))
-    :phrases (let [phrases (if (:shuffle? params) (shuffle phrases/all) phrases/all)
-                   final-phrases (take (:count params) phrases)]
+    :phrases (let [phrases (if shuffle? (shuffle phrases/all) phrases/all)
+                   final-phrases (take total-qs phrases)]
                (into [] (map phrase-question-template phrases)))
-    :verbs (let [verbs    (utils/list->randomized-n-list 20 (german/verbs))
-                 subjects (utils/list->randomized-n-list 20 (german/basic-subjects))
-                 tenses   (utils/list->randomized-n-list 20 (german/tenses))
+    :verbs (let [verbs    (utils/list->randomized-n-list total-qs (german/verbs))
+                 subjects (utils/list->randomized-n-list total-qs (german/basic-subjects))
+                 tenses   (utils/list->randomized-n-list total-qs (german/tenses))
                  subject-verb-tense-list (map vector subjects verbs tenses)]
              (into [] (map #(apply verb-template %) subject-verb-tense-list)))
     :accusitive-nouns []))
