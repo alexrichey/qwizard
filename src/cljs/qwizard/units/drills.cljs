@@ -46,6 +46,10 @@
 (defn set-current-question-as-last [unit]
   (assoc unit :question-number (count (:questions unit))))
 
+(defn back-to-first-q [unit]
+  (assoc unit :question-number (if (count (:questions unit))
+                                 1 0)))
+
 (defn reset-questions [unit]
   (-> unit
       (assoc :show-answers false)
@@ -94,7 +98,12 @@
 (defn handle-keypress [unit key]
   (case key
     :right (next-question unit)
+    :L-key (next-question unit)
     :left (previous-question unit)
+    :H-key (previous-question unit)
     :up (toggle-show-answers unit)
+    :K-key (toggle-show-answers unit)
     :down (toggle-show-answers unit)
+    :J-key (toggle-show-answers unit)
+    :zero-key (back-to-first-q unit)
     unit))
