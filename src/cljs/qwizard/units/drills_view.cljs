@@ -35,8 +35,8 @@
     [:div {:class "articles-drill"}
      (drill-filter-form unit)
      [:button {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answers"]
-     [:button {:onClick #(re-frame.core/dispatch [:previous-question])} "previous!"]
-     [:button {:onClick #(re-frame.core/dispatch [:next-question])} "next!"]
+     [:button {:onClick #(re-frame.core/dispatch [:change-question :previous])} "previous!"]
+     [:button {:onClick #(re-frame.core/dispatch [:change-question :next])} "next!"]
 
      [:div {} (str "Type: " (:active-type @unit))]
      [:div {} (str "Question " (unit/get-current-question-num @unit)

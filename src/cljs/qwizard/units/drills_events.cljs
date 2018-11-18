@@ -20,6 +20,19 @@
  (fn [coeffects event]
    (let [type (second event)
          db   (:db coeffects)]
-     (print "setting to: " type)
      {:db (update-in db DB-KEY #(drills/set-active-type % type))})))
 
+(re-frame.core/reg-event-fx
+ :toggle-show-answers
+ (fn [coeffects event]
+   (let [db (:db coeffects)]
+     {:db (update-in db DB-KEY #(drills/toggle-show-answers %))})))
+
+(re-frame.core/reg-event-fx
+ :change-question
+ (fn [coeffects event]
+   (let [db (:db coeffects)
+         direction (second event)]
+     (case direction
+       :next {:db (update-in db DB-KEY #(drills/next-question %))}
+       :previous {:db (update-in db DB-KEY #(drills/previous-question %))}))))
