@@ -25,16 +25,6 @@
         (update :questions #(conj % (last (:questions-on-deck unit))))
         (update :questions-on-deck pop))))
 
-(defn set-next-question [unit]
-  (if (> (count (:questions-on-deck unit)) 0)
-    (transfer-q-from-ondeck unit)
-    (-> unit
-        (assoc :questions-on-deck (questions/generate {:question-type (:active-type unit)
-                                                       :shuffle? true
-                                                       :count 20
-                                                       :chapter-filter (chapter-filter unit)}))
-        (transfer-q-from-ondeck))))
-
 ;; getters
 (defn show-answers? [unit]
   (:show-answers unit))
@@ -63,12 +53,27 @@
       (assoc :questions-on-deck [])
       (assoc :question-number 0)))
 
+(defn set-chapter-filter [unit chapter]
+  (-> unit
+      reset-questions
+      (assoc :chapter-filter chapter)))
+
 (defn set-active-type [unit type]
   (if (not= (type (:active-type unit)))
     unit
     (-> unit
         (assoc :active-type type)
         reset-questions)))
+
+(defn set-next-question [unit]
+  (if (> (count (:questions-on-deck unit)) 0)
+    (transfer-q-from-ondeck unit)
+    (-> unit
+        (assoc :questions-on-deck (questions/generate {:question-type (:active-type unit)
+                                                       :shuffle? true
+                                                       :count 20
+                                                       :chapter-filter (chapter-filter unit)}))
+        (transfer-q-from-ondeck))))
 
 (defn next-question [unit]
   (if (< (:question-number unit)
@@ -93,8 +98,3 @@
     :up (toggle-show-answers unit)
     :down (toggle-show-answers unit)
     unit))
-
-(defn set-chapter-filter [unit chapter]
-  (-> unit
-      reset-questions
-      (assoc :chapter-filter chapter)))
