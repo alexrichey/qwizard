@@ -25,22 +25,15 @@
         (update :questions #(conj % (last (:questions-on-deck unit))))
         (update :questions-on-deck pop))))
 
-(defn set-next-noun-question [unit]
+(defn set-next-question [unit]
   (if (> (count (:questions-on-deck unit)) 0)
     (transfer-q-from-ondeck unit)
     (-> unit
-        (assoc :questions-on-deck (questions/generate {:question-type :nouns
-                                                       :randomize? true
+        (assoc :questions-on-deck (questions/generate {:question-type (:active-type unit)
+                                                       :shuffle? true
                                                        :count 20
                                                        :chapter-filter (chapter-filter unit)}))
         (transfer-q-from-ondeck))))
-
-(defn get-question-for-type [unit]
-  (case (:active-type unit)
-    :verbs (questions/random-basic-verb-phrase)
-    :phrases (questions/random-phrase-question)
-    :accusitive-nouns (questions/random-basic-verb-phrase)))
-
 
 ;; getters
 (defn show-answers? [unit]
@@ -81,15 +74,10 @@
   (if (< (:question-number unit)
          (count (:questions unit)))
     (update unit :question-number inc)
-    (if (= :nouns (:active-type unit))
-      (-> unit
-          (set-next-noun-question)
-          (assoc :show-answers false)
-          set-current-question-as-last)
-      (-> unit
-          (update :questions conj (get-question-for-type unit))
-          (assoc :show-answers false)
-          set-current-question-as-last))))
+    (-> unit
+        (set-next-question)
+        (assoc :show-answers false)
+        set-current-question-as-last)))
 
 (defn previous-question [unit]
   (if (<= (:question-number unit) 1)
