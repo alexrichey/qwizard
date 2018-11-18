@@ -1,7 +1,8 @@
 (ns qwizard.german.helpers
-  (:require [qwizard.german.dictionary :as dictionary]))
+  (:require [qwizard.german.dictionary :as dictionary]
+            [clojure.set :as set]))
 
-;; filters
+;; dictionary filters
 (defn article? [word]
   (= (:type word) :article))
 
@@ -23,6 +24,15 @@
 
 (defn chapter? [word chapter]
   (= (:chapter word) chapter))
+
+(defn query [filters]
+  (loop [filters filters
+         words dictionary/german]
+    (if (and (> (count words) 0)
+             (> (count filters) 0))
+      (recur (rest filters) (filter (first filters) words))
+      words)))
+
 
 ;; getters
 (defn articles []

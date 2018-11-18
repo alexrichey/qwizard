@@ -11,23 +11,38 @@
    :active-type :nouns
    :show-answers false
    :chapter-filter nil
-   :question-number 0 ;; note: this questions 1-indexed (ie the first question = question 1)
+   :question-number 0 ;; note: question-number is 1-indexed (ie the first question is question 1)
+   :questions-on-deck []
    :questions []})
 
 (defn chapter-filter [unit]
   (:chapter-filter unit))
 
+(defn transfer-q-from-ondeck [unit]
+  (if (not (> (count (:questions-on-deck unit)) 0))
+    unit
+    (-> unit
+        (update :questions #(conj % (last (:questions-on-deck unit))))
+        (update :questions-on-deck pop))))
+
+(defn set-next-noun-question [unit]
+  (if (> (count (:questions-on-deck unit)) 0)
+    (transfer-q-from-ondeck unit)
+    (-> unit
+        (assoc :questions-on-deck (questions/generate {:question-type :nouns
+                                                       :randomize? true
+                                                       :count 20
+                                                       :chapter-filter (chapter-filter unit)}))
+        (transfer-q-from-ondeck))))
+
 (defn get-question-for-type [unit]
   (case (:active-type unit)
-    :nouns (if (some? (chapter-filter unit))
-             (questions/random-basic-noun-question (chapter-filter unit))
-             (questions/random-basic-noun-question))
     :verbs (questions/random-basic-verb-phrase)
     :phrases (questions/random-phrase-question)
     :accusitive-nouns (questions/random-basic-verb-phrase)))
 
-;; getters
 
+;; getters
 (defn show-answers? [unit]
   (:show-answers unit))
 
@@ -52,6 +67,7 @@
   (-> unit
       (assoc :show-answers false)
       (assoc :questions [])
+      (assoc :questions-on-deck [])
       (assoc :question-number 0)))
 
 (defn set-active-type [unit type]
@@ -65,10 +81,15 @@
   (if (< (:question-number unit)
          (count (:questions unit)))
     (update unit :question-number inc)
-    (-> unit
-        (update :questions conj (get-question-for-type unit))
-        (assoc :show-answers false)
-        set-current-question-as-last)))
+    (if (= :nouns (:active-type unit))
+      (-> unit
+          (set-next-noun-question)
+          (assoc :show-answers false)
+          set-current-question-as-last)
+      (-> unit
+          (update :questions conj (get-question-for-type unit))
+          (assoc :show-answers false)
+          set-current-question-as-last))))
 
 (defn previous-question [unit]
   (if (<= (:question-number unit) 1)
@@ -86,7 +107,6 @@
     unit))
 
 (defn set-chapter-filter [unit chapter]
-  (print "hi")
   (-> unit
       reset-questions
       (assoc :chapter-filter chapter)))

@@ -40,3 +40,20 @@
 (defn random-basic-noun-question
   ([]        (nouns-with-article-template (rand-nth (german/nouns))))
   ([chapter] (nouns-with-article-template (rand-nth (german/nouns-for-chapter chapter)))))
+
+
+;; {:question-type :nouns
+;;  :count 20
+;;  :randomize? true
+;;  :chapter-filter (chapter-filter unit)}
+(defn generate [params]
+  (if (not= (:question-type params) :nouns)
+    []
+    (let [query (if (some? (:chapter-filter params))
+                  [german/noun? #(german/chapter? % (:chapter-filter params))]
+                  [german/noun?])
+          nouns (take (:count params) (german/query query))
+          final-nouns (if (:randomize? params)
+                        (shuffle nouns)
+                        nouns)]
+      (into [] (map nouns-with-article-template final-nouns)))))
