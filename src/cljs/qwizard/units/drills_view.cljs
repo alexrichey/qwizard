@@ -3,7 +3,9 @@
             [qwizard.units.drills :as unit]
             [qwizard.units.question-templates :as qts]
             [qwizard.views.language :as lang]
+            [qwizard.german.helpers :as german]
             [re-frame.core :as re-frame]
+            [soda-ash.core :as sa]
             [reagent.core :as r]))
 
 (defn button [name action params active?]
@@ -12,28 +14,40 @@
             :onClick (fn [e] (re-frame.core/dispatch [action params]))}
    name])
 
-(defn drill-filter-form [unit]
-  [:div {}
+(defn chapter-dropdown []
+  (let [chapter-nums (german/chapters)
+        chapter-vals (map (fn [x] {:text (str "Chapter " x) :value x :key x}) chapter-nums)]
+    (fn [state]
+      [sa/Dropdown {:options chapter-vals
+                    :placeholder "Select a chapter"
+                    :selection true
+                    :multiple true
+                    :on-change (fn [e d]
+                                 (.preventDefault e)
+                                 (let [selected (into #{} (.-value d))]
+                                   (swap! state assoc :selected-chapters selected)
+                                   (re-frame.core/dispatch [:form-change @state])))}])))
 
-   [:div.btn-group
-    (doall (map #(let [name (:name %)
-                         action :set-drill-type
-                         type (:type %)
-                         active? (= (:type %) (:active-type @unit))]
-                     (button name action type active?))
-                  (:drill-types @unit)))]
-
-   [:label {} "Chapter Select"]
-   [:input {:type :number
-            :value (unit/chapter-filter @unit)
-            :onChange (fn [e] (let [num (.-value (.-currentTarget e))]
-                                (re-frame.core/dispatch [:chapter-filter-num-change num])))}
-    ]])
+(defn drill-filter-form []
+  (let [state (r/atom {})]
+    (fn [unit]
+      [:div {}
+       ;; @state
+       [:div.btn-group (doall (map #(let [name (:name %)
+                                          action :set-drill-type
+                                          type (:type %)
+                                          active? (= (:type %) (:active-type @unit))]
+                                      (button name action type active?))
+                                   (:drill-types @unit)))]
+       [:br]
+       [chapter-dropdown state]])))
 
 (defn main []
-  (let [unit  (re-frame/subscribe [::subs/drills])]
+  (print "rerendered main")
+  (let [unit  (re-frame/subscribe [::subs/drills])
+        filters (:filters @unit)]
     [:div {:class "articles-drill"}
-     (drill-filter-form unit)
+     [drill-filter-form (atom filters)]
      [:button {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answers"]
      [:button {:onClick #(re-frame.core/dispatch [:change-question :previous])} "previous!"]
      [:button {:onClick #(re-frame.core/dispatch [:change-question :next])} "next!"]

@@ -9,14 +9,14 @@
                  {:type :phrases :name "Phrases"}
                  {:type :accusitive-nouns :name "Accusative Nouns"}]
    :active-type :nouns
+   :filters {}
    :show-answers false
-   :chapter-filter nil
    :question-number 0 ;; note: question-number is 1-indexed (ie the first question is question 1)
    :questions-on-deck []
    :questions []})
 
-(defn chapter-filter [unit]
-  (:chapter-filter unit))
+(defn chapter-filters [unit]
+  (get-in unit [:filters :selected-chapters]))
 
 (defn transfer-q-from-ondeck [unit]
   (if (not (> (count (:questions-on-deck unit)) 0))
@@ -57,10 +57,10 @@
       (assoc :questions-on-deck [])
       (assoc :question-number 0)))
 
-(defn set-chapter-filter [unit chapter]
+(defn set-filters [unit filters]
   (-> unit
       reset-questions
-      (assoc :chapter-filter chapter)))
+      (assoc :filters filters)))
 
 (defn set-active-type [unit type]
   (if (not= (type (:active-type unit)))
@@ -76,7 +76,7 @@
         (assoc :questions-on-deck (questions/generate {:question-type (:active-type unit)
                                                        :shuffle? true
                                                        :count 20
-                                                       :chapter-filter (chapter-filter unit)}))
+                                                       :chapter-filters (chapter-filters unit)}))
         (transfer-q-from-ondeck))))
 
 (defn next-question [unit]

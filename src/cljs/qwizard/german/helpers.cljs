@@ -22,6 +22,9 @@
 (defn basic-subject? [word chapter]
   (:basic-subject? word))
 
+(defn chapter-in? [word chapters]
+  (contains? chapters (:chapter word)))
+
 (defn chapter? [word chapter]
   (= (:chapter word) chapter))
 
@@ -35,6 +38,13 @@
 
 
 ;; getters
+(defn chapters []
+  (->> dictionary/german
+       (map :chapter)
+       (filter some?)
+       (sort)
+       (into #{})))
+
 (defn articles []
   (into [] (filter article? dictionary/german)))
 
@@ -49,6 +59,9 @@
 
 (defn basic-subjects []
   (into [] (filter basic-subject? dictionary/german)))
+
+(defn words-for-chapters [chapters]
+  (into [] (filter #(chapter-in? % chapters)) dictionary/german))
 
 (defn words-for-chapter [chapter]
   (into [] (filter #(chapter? % chapter)) dictionary/german))

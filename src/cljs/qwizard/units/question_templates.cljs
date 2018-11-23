@@ -35,13 +35,14 @@
 (defn generate [{question-type :question-type
                  shuffle? :shuffle?
                  total-qs :count
-                 chapter-filter :chapter-filter}]
+                 chapter-filters :chapter-filters}]
   (case question-type
-    :nouns (let [query (if (some? chapter-filter)
-                         [german/noun? #(german/chapter? % chapter-filter)]
+    :nouns (let [query (if (some? chapter-filters)
+                         [german/noun? #(german/chapter-in? % chapter-filters)]
                          [german/noun?])
-                 nouns (take total-qs (german/query query))
-                 final-nouns (if shuffle? (shuffle nouns) nouns)]
+                 results (german/query query)
+                 ordered (if shuffle? (shuffle results) results)
+                 final-nouns (take total-qs ordered)]
              (into [] (map nouns-with-article-template final-nouns)))
     :phrases (let [phrases (if shuffle? (shuffle phrases/all) phrases/all)
                    final-phrases (take total-qs phrases)]

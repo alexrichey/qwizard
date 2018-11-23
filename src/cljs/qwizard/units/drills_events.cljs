@@ -7,13 +7,11 @@
 (def DB-KEY [:units :drills])
 
 (re-frame.core/reg-event-fx
- :chapter-filter-num-change
+ :form-change
  (fn [coeffects event]
-   (let [chapter (second event)
-         db      (:db coeffects)]
-     (if (utils/is-actually-an-int? chapter)
-       {:db (update-in db DB-KEY #(drills/set-chapter-filter % (int chapter)))}
-       {}))))
+   (let [filters (second event)
+         db    (:db coeffects)]
+     {:db (update-in db DB-KEY #(drills/set-filters % filters))})))
 
 (re-frame.core/reg-event-fx
  :set-drill-type
