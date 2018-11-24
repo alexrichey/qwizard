@@ -43,19 +43,20 @@
        [chapter-dropdown state]])))
 
 (defn main []
-  (print "rerendered main")
   (let [unit  (re-frame/subscribe [::subs/drills])
         filters (:filters @unit)]
     [:div {:class "articles-drill"}
      [drill-filter-form (atom filters)]
-     [:button {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answers"]
-     [:button {:onClick #(re-frame.core/dispatch [:change-question :previous])} "previous!"]
-     [:button {:onClick #(re-frame.core/dispatch [:change-question :next])} "next!"]
-
      [:div {} (str "Type: " (:active-type @unit))]
      [:div {} (str "Question " (unit/get-current-question-num @unit)
                    " Out of "  (unit/get-total-questions @unit))]
-     [:div {} (let [question (unit/get-current-question @unit)]
-                (lang/phrase (if (unit/show-answers? @unit)
-                                   (qts/get-answer question)
-                                   (qts/get-question question))))]]))
+     [:div.centered {}
+      [:i.fas.fa-caret-left.fa-6x.caret-left {:onClick #(re-frame.core/dispatch [:change-question :previous])}]
+      [:i.fas.fa-caret-right.fa-6x.caret-right {:onClick #(re-frame.core/dispatch [:change-question :next])}]
+      [:span.question {}
+       (let [question (unit/get-current-question @unit)]
+         (lang/phrase (if (unit/show-answers? @unit)
+                        (qts/get-answer question)
+                        (qts/get-question question))))]]
+     [:button.show-answer {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answer"]]))
+

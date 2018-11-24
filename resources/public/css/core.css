@@ -15,6 +15,7 @@
   border-style: solid:
   border-color: black;
   border-width: 1px;
+  position: relative;
 }
 
 button.active {
@@ -29,4 +30,31 @@ div.ui.container {
   background: white;
   border-radius: 3px;
   padding: 0px 17px;
+}
+
+.centered {
+  position: absolute;
+  top: 38%;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+}
+
+.caret-left {
+  float: left;
+}
+
+.caret-right {
+  float: right;
+}
+
+.question {
+  position: absolute;
+  top: 40%;
+}
+
+button.show-answer {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
 }
