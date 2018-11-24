@@ -2,8 +2,10 @@
   (:require [qwizard.german.helpers :as german]
             [qwizard.units.question-templates :as questions]))
 
-(defn create [name]
-  {:name name
+(def UNIT-NAME "Drills Of Many Sorts!")
+
+(defn create []
+  {:name UNIT-NAME
    :drill-types [{:type :verbs :name "Verbs"}
                  {:type :nouns :name "Nouns"}
                  {:type :phrases :name "Phrases"}

@@ -20,3 +20,13 @@
 button.active {
   background: violet;
 }
+
+body {
+  background: #f7f7f7;
+}
+
+div.ui.container {
+  background: white;
+  border-radius: 3px;
+  padding: 0px 17px;
+}

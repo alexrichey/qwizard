@@ -3,6 +3,7 @@
             [qwizard.subs :as subs]
             [qwizard.units.drills-view :as drills-view]
             [qwizard.views.nav :as nav]
+            [soda-ash.core :as sa]
             [re-frame.core :as re-frame]
             [reagent.core :as r]))
 
@@ -11,15 +12,23 @@
         units (re-frame/subscribe [::subs/units])
         current-unit (get @units current-unit-key)]
     [:div  {:class "main" }
-     [:img {:src "img/qwizard-mascot-pixilart.png"}]
-     [:div {} "Ich bin das Qwizard!"]
-     [:div {} "Trainiere dich selbst!"]
-     ;; (nav/nav (db/units-as-list @units))
-     [:h1 (str "Current Unit: " (:name current-unit)) ]
-     [:div "----------"]
+     [sa/Menu {}
+      (doall (map (fn [x] [sa/MenuItem {:name (:name x) :active false :key (:name x)}]) (vals @units)))]
      [:div {:tab-index 0 :on-key-down (fn [e] (let [keycode (.-keyCode e)]
                                                 (re-frame.core/dispatch [:keypress keycode])))}
-      (case current-unit-key
-        :drills (drills-view/main)
-        [:div {} "---- no unit spec'd -----"])]]))
+      [sa/Container {}
+       (case current-unit-key
+         :drills (drills-view/main)
+         [:div {} "---- no unit spec'd -----"])]]
+     [:div#footer {}
+      [sa/Grid {:columns 12}
+       [sa/GridRow {} 
+        [sa/GridColumn {:width 3}
+         [:img {:src "img/qwizard-mascot-pixilart.png"}]]
+        [sa/GridColumn {:width 9}
+         [:div.qwizard-says {}
+          [:div {} "Ich bin das Qwizard!"]
+          [:div {} "Trainiere dich selbst!"]]]]]
+      ]]))
+
 

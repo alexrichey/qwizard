@@ -6,7 +6,7 @@
 (def default-db
   {:name "Der Tisch"
    :current-unit :drills
-   :units {:drills (drills/create "Drills of Many Sorts!")}})
+   :units {:drills (drills/create)}})
 
 (defn set-chapter-filter [db chapter]
   (if (not (some? chapter))
@@ -25,11 +25,14 @@
 (defn get-unit [unit-key db]
   (first (filter #(= (:key %) unit-key) (:units db))))
 
-(defn units-as-list [units]
-  (into [] (map #(assoc (second %) :key (first %)) units)))
-
 (defn handle-keypress [db key]
   (let [unit-key (:current-unit db)]
     (case unit-key
       :drills (update-in db [:units :drills] #(drills/handle-keypress % key))
       db)))
+
+(defn get-unit-names [db]
+  (let [units-map (:units db)
+        units-vals (map val units-map)
+        names (map :name units-vals)]
+    (into [] names)))
