@@ -11,24 +11,26 @@
   (let [current-unit-key @(re-frame/subscribe [::subs/current-unit])
         units (re-frame/subscribe [::subs/units])
         current-unit (get @units current-unit-key)]
-    [:div  {:class "main" }
-     [sa/Menu {}
-      (doall (map (fn [x] [sa/MenuItem {:name (:name x) :active false :key (:name x)}]) (vals @units)))]
-     [:div {:tab-index 0 :on-key-down (fn [e] (let [keycode (.-keyCode e)]
-                                                (.preventDefault e)
-                                                (re-frame.core/dispatch [:keypress keycode])))}
+
+    [:div.main
+     [sa/Menu (doall (map (fn [x]
+                            [sa/MenuItem {:name (:name x) :active false :key (:name x)}])
+                          (vals @units)))]
+     [:div {:on-key-down (fn [e]
+                           (let [keycode (.-keyCode e)]
+                             (.preventDefault e)
+                             (re-frame.core/dispatch [:keypress keycode])))}
       (case current-unit-key
-        :drills (drills-view/main)
-        [:div {} "---- no unit spec'd -----"])]
-     [:div#footer {}
+        :drills [drills-view/main])]
+
+     [:div#footer
       [sa/Grid {:columns 12}
-       [sa/GridRow {} 
+       [sa/GridRow
         [sa/GridColumn {:width 3}
          [:img {:src "img/qwizard-mascot-pixilart.png"}]]
         [sa/GridColumn {:width 9}
-         [:div.qwizard-says {}
-          [:div {} "Ich bin das Qwizard!"]
-          [:div {} "Trainiere dich selbst!"]]]]]
-      ]]))
+         [:div.qwizard-says
+          [:div "Ich bin das Qwizard!"]
+          [:div "Trainiere dich selbst!"]]]]]]]))
 
 
