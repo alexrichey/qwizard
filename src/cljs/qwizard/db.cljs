@@ -4,20 +4,10 @@
             [qwizard.units.drills :as drills]))
 
 (def default-db
-  {:name "Der Tisch"
+  {:name "Qwizard DB"
    :current-unit :drills
    :units {:drills (drills/create)
            :quizzer {:name "Quiz Me!"}}})
-
-(defn set-chapter-filter [db chapter]
-  (if (not (some? chapter))
-    db
-    (let [nouns (shuffle (german/nouns-for-chapter chapter))]
-      (-> db
-         (assoc-in [:units :articles-drill :chapter-filter] chapter)
-         (assoc-in [:units :articles-drill :vocab] nouns)
-         (assoc-in [:units :articles-drill :current-word-index] 0)
-         (assoc-in [:units :articles-drill :current-word] (first nouns))))))
 
 (defn change-unit [db unit-key]
   (case unit-key
@@ -27,13 +17,7 @@
   (first (filter #(= (:key %) unit-key) (:units db))))
 
 (defn handle-keypress [db key]
-  (let [unit-key (:current-unit db)]
-    (case unit-key
-      :drills (update-in db [:units :drills] #(drills/handle-keypress % key))
-      db)))
-
-(defn get-unit-names [db]
-  (let [units-map (:units db)
-        units-vals (map val units-map)
-        names (map :name units-vals)]
-    (into [] names)))
+  "Routes the keypress to the handler for the active unit"
+  (let [unit-key (:current-unit db)
+        keypress-handler (get-in db [:units unit-key :keypress-handler])]
+    (update-in db [:units unit-key] #(keypress-handler % key))))

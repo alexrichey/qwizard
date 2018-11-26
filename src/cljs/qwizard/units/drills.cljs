@@ -15,6 +15,7 @@
    :show-answers false
    :question-number 0 ;; note: question-number is 1-indexed (ie the first question is question 1)
    :questions-on-deck []
+   :keypress-handler nil
    :questions []})
 
 (defn chapter-filters [unit]
@@ -125,8 +126,6 @@
     true unit))
 
 (defn create []
-  (next-question base-drill))
-
-
-
-;; Tests
+  (-> base-drill
+      next-question
+      (assoc :keypress-handler handle-keypress)))
