@@ -116,20 +116,14 @@
       next-question))
 
 (defn handle-keypress [unit key]
-  (case key
-    :right (next-question unit)
-    :L-key (next-question unit)
-    :left (previous-question unit)
-    :H-key (previous-question unit)
-    :up (handle-question-answered unit true)
-    :K-key (handle-question-answered unit true)
-    :down (handle-question-answered unit false)
-    :J-key (handle-question-answered unit false)
-    :zero-key (back-to-first-q unit)
-    :enter (toggle-show-answers unit)
-    :tab (toggle-show-answers unit)
-    unit))
-
+  (cond
+    (contains? #{:right  :L-key} key) (next-question unit)
+    (contains? #{:left   :H-key} key) (previous-question unit)
+    (contains? #{:up     :K-key} key) (handle-question-answered unit true)
+    (contains? #{:down   :J-key} key) (handle-question-answered unit false)
+    (contains? #{:enter  :tab  } key) (toggle-show-answers unit)
+    (= key :zero-key) (back-to-first-q unit)
+    true unit))
 
 (defn create []
   (next-question base-drill))

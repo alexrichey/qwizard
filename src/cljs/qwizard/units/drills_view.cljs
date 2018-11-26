@@ -11,6 +11,8 @@
             [clojure.set :as set]
             [qwizard.utils :as utils]))
 
+(def QUESTION-HISTORY-MAX-ROWS 20)
+
 (defn button [name action params active?]
   [:button {:key name
             :class (if active? ["active"] [])
@@ -61,14 +63,14 @@
     (let [freqs (frequencies (map #(:got-it-correct %) (unit/get-questions @unit)))]
       [:div
        [:div (str "You're going " (or (get freqs true) 0) " for " (+ (or (get freqs true) 0) (or (get freqs false) 0)) )]
-       (if (> (get freqs nil) 1) [:div {} (str ".However... you didn't try on " (dec (get freqs nil)))])])))
+       (if (> (get freqs nil) 1) [:div {} (str "However... you didn't try on " (dec (get freqs nil)))])])))
 
 (defn main []
   (let [unit  (re-frame/subscribe [::subs/drills])
         filters (:filters @unit)]
-    [:div {}
-     [sa/Container {}
-      [:div.articles-drill
+    [:div 
+     [sa/Container {:tab-index 0}
+      [:div.articles-drill {}
        [drill-filter-form (atom filters)]
        [:div {} (str "Type: " (:active-type @unit))]
        [:div {} (str "Question " (unit/get-current-question-num @unit)
@@ -76,8 +78,10 @@
        [:div.centered {}
         [:i.fas.fa-caret-left.fa-6x.caret-left {:onClick #(re-frame.core/dispatch [:change-question :previous])}]
         [:div.up-down-carets {}
-         [:i.fas.fa-thumbs-up.fa-3x.thumbs-up {:onClick #(re-frame.core/dispatch [:answer-question true])}]
-         [:i.fas.fa-thumbs-down.fa-3x.thumbs-down {:onClick #(re-frame.core/dispatch [:answer-question false])}]
+         [:div "yep." [:i.fas.fa-thumbs-up.fa-3x.thumbs-up {:onClick #(re-frame.core/dispatch [:answer-question true])}]]
+         [:br]
+         [:div "nope"
+          [:i.fas.fa-thumbs-down.fa-3x.thumbs-down {:onClick #(re-frame.core/dispatch [:answer-question false])}]]
          ]
         [:span.question {}
          (let [question (unit/get-current-question @unit)]
@@ -103,4 +107,4 @@
                                                              [:i.fas.fa-check]
                                                              [:i.fas.fa-times])]
                      ])
-            (rest (reverse (unit/get-questions @unit))))]]]))
+            (rest (take QUESTION-HISTORY-MAX-ROWS (reverse (unit/get-questions @unit)))))]]]))

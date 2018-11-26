@@ -24,6 +24,8 @@ button.active {
 
 body {
   background: #f7f7f7;
+  max-width: 800px;
+  margin: auto;
 }
 
 div.ui.container {
