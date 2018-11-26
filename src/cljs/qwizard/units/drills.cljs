@@ -93,8 +93,7 @@
       (assoc :question-number 0)))
 
 (defn diagnostic [unit]
-  (assoc unit
-         :questions-on-deck (count (:questions-on-deck unit))))
+  (assoc unit :questions-on-deck (count (:questions-on-deck unit))))
 
 (defn set-active-type [unit type]
   (if (not= (type (:active-type unit)))

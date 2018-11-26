@@ -13,12 +13,6 @@
 
 (def QUESTION-HISTORY-MAX-ROWS 20)
 
-(defn button [name action params active?]
-  [:button {:key name
-            :class (if active? ["active"] [])
-            :onClick (fn [e] (re-frame.core/dispatch [action params]))}
-   name])
-
 (defn chapter-dropdown []
   (let [chapter-nums (german/chapters)]
     (fn [state]
@@ -35,28 +29,22 @@
                                      (swap! state assoc :selected-chapters selected)
                                      (re-frame.core/dispatch [:form-change @state])))}]))))
 
-(defn drill-type-buttons [drill-types]
-  (let [buttons (map (fn [dt] [sa/Button {} ]))]))
+(defn drill-type-buttons []
+  (fn [unit]
+    [sa/ButtonGroup {:class "btn-group"}
+     (doall (map (fn [{name :name drill-type :type}]
+                   [sa/Button {:key (utils/rand-str)
+                               :active (= drill-type (:active-type @unit))
+                               :on-click (fn [e]
+                                           (.preventDefault e)
+                                           (re-frame.core/dispatch [:set-drill-type drill-type]))}
+                    name])
+                 (:drill-types @unit)))]))
 
 (defn drill-filter-form []
-  (fn [unit]
-    [:div {}
-     ;; [sa/ButtonGroup {}
-     ;;  [sa/Button {} "One"]
-     ;;  [sa/ButtonOr]
-     ;;  [sa/Button {} "Two"]
-     ;;  [sa/ButtonOr]
-     ;;  [sa/Button {} "Three"]
-     ;;  ]
-     ;; @state
-     ;; [:div.btn-group (doall (map #(let [name (:name %)
-     ;;                                    action :set-drill-type
-     ;;                                    type (:type %)
-     ;;                                    active? (= (:type %) (:active-type @unit))]
-     ;;                                (button name action type active?))
-     ;;                             (:drill-types @unit)))]
-     [:br]
-     [chapter-dropdown unit]]))
+  (fn [filters]
+    [:div
+     [chapter-dropdown filters]]))
 
 (defn stats []
   (fn [unit]
@@ -68,13 +56,12 @@
 (defn main []
   (let [unit  (re-frame/subscribe [::subs/drills])
         filters (:filters @unit)]
-    [:div 
+    [:div
      [sa/Container {:tab-index 0}
       [:div.articles-drill {}
+       [drill-type-buttons unit]
        [drill-filter-form (atom filters)]
-       [:div {} (str "Type: " (:active-type @unit))]
-       [:div {} (str "Question " (unit/get-current-question-num @unit)
-                     " Out of "  (unit/get-total-questions @unit))]
+       [:div {} (str "Question " (unit/get-current-question-num @unit))]
        [:div.centered {}
         [:i.fas.fa-caret-left.fa-6x.caret-left {:onClick #(re-frame.core/dispatch [:change-question :previous])}]
         [:div.up-down-carets {}
@@ -90,7 +77,6 @@
                           (qts/get-question question))))]]
        [:button.show-answer {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answer (Press Enter)"]]]
      [:br]
-     ;; [diag/viewer (unit/diagnostic @unit)]
      [stats unit]
      [sa/Table {:celled true}
       [sa/TableHeader
@@ -99,7 +85,7 @@
         [sa/TableHeaderCell "Answer"]
         [sa/TableHeaderCell "Got It?"]
         ]]
-      [sa/TableBody 
+      [sa/TableBody
        (map (fn [q] [sa/TableRow {:key (utils/rand-str)}
                      [sa/TableCell {:key (utils/rand-str)} (lang/phrase (qts/get-question q))]
                      [sa/TableCell {:key (utils/rand-str)} (lang/phrase (qts/get-answer q))]
@@ -107,4 +93,5 @@
                                                              [:i.fas.fa-check]
                                                              [:i.fas.fa-times])]
                      ])
-            (rest (take QUESTION-HISTORY-MAX-ROWS (reverse (unit/get-questions @unit)))))]]]))
+            (rest (take QUESTION-HISTORY-MAX-ROWS (reverse (unit/get-questions @unit)))))]]
+     [diag/viewer (unit/diagnostic @unit)]]))
