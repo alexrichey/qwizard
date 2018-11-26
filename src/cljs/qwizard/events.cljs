@@ -16,8 +16,10 @@
    (let [key-code-num (second keycode)
          codes {37 :left 39 :right 38 :up 40 :down
                 72 :H-key 74 :J-key 75 :K-key 76 :L-key
-                48 :zero-key}
+                48 :zero-key
+                13 :enter 9 :tab}
          key (get codes key-code-num)]
+     ;; (.log js/console key-code-num)
      {:db (db/handle-keypress (:db coeffects) key)})))
 
 (re-frame.core/reg-event-fx :change-unit change-unit)

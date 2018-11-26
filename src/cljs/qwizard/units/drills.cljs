@@ -4,7 +4,7 @@
 
 (def UNIT-NAME "Drills Of Many Sorts!")
 
-(defn create []
+(def base-drill
   {:name UNIT-NAME
    :drill-types [{:type :verbs :name "Verbs"}
                  {:type :nouns :name "Nouns"}
@@ -37,58 +37,44 @@
 (defn get-current-question-num [unit]
   (:question-number unit))
 
+(defn current-question-path [unit]
+  [:questions (- (get-current-question-num unit) 1)])
+
 (defn get-current-question [unit]
   (get (:questions unit) (- (:question-number unit) 1)))
 
+(defn get-questions [unit]
+  (:questions unit))
+
+(defn get-questions-on-deck [unit]
+  (:questions-on-deck unit))
 
 ;; setters
 (defn toggle-show-answers [unit]
   (update unit :show-answers not))
 
-(defn set-current-question-as-last [unit]
-  (assoc unit :question-number (count (:questions unit))))
-
 (defn back-to-first-q [unit]
   (assoc unit :question-number (if (count (:questions unit))
                                  1 0)))
 
-(defn reset-questions [unit]
-  (-> unit
-      (assoc :show-answers false)
-      (assoc :questions [])
-      (assoc :questions-on-deck [])
-      (assoc :question-number 0)))
-
-(defn set-filters [unit filters]
-  (-> unit
-      reset-questions
-      (assoc :filters filters)))
-
-(defn set-active-type [unit type]
-  (if (not= (type (:active-type unit)))
-    unit
-    (-> unit
-        (assoc :active-type type)
-        reset-questions)))
-
-(defn set-next-question [unit]
-  (if (> (count (:questions-on-deck unit)) 0)
-    (transfer-q-from-ondeck unit)
-    (-> unit
-        (assoc :questions-on-deck (questions/generate {:question-type (:active-type unit)
-                                                       :shuffle? true
-                                                       :count 20
-                                                       :chapter-filters (chapter-filters unit)}))
-        (transfer-q-from-ondeck))))
+(defn resupply-on-deck-if-needed [unit]
+  (let [on-deck-stocked (> (count (:questions-on-deck unit)) 0)]
+    (if on-deck-stocked
+      unit
+      (assoc unit :questions-on-deck (questions/generate {:question-type (:active-type unit)
+                                                          :shuffle? true
+                                                          :count 20
+                                                          :chapter-filters (chapter-filters unit)})))))
 
 (defn next-question [unit]
-  (if (< (:question-number unit)
-         (count (:questions unit)))
-    (update unit :question-number inc)
-    (-> unit
-        (set-next-question)
-        (assoc :show-answers false)
-        set-current-question-as-last)))
+  (let [new-unit (-> unit
+                     (assoc :show-answers false)
+                     resupply-on-deck-if-needed
+                     (update :question-number inc))]
+    (let [at-last-question (>= (:question-number unit) (count (:questions unit)))]
+      (if at-last-question
+        (transfer-q-from-ondeck new-unit)
+        new-unit))))
 
 (defn previous-question [unit]
   (if (<= (:question-number unit) 1)
@@ -97,15 +83,57 @@
         (update :question-number dec)
         (assoc :show-answers false))))
 
+(defn answer-current-question [unit correct?]
+  (update-in unit (current-question-path unit) (if correct? questions/answer-correct questions/answer-wrong)))
+
+(defn reset-questions [unit]
+  (-> unit
+      (assoc :questions [])
+      (assoc :questions-on-deck [])
+      (assoc :question-number 0)))
+
+(defn diagnostic [unit]
+  (assoc unit
+         :questions-on-deck (count (:questions-on-deck unit))))
+
+(defn set-active-type [unit type]
+  (if (not= (type (:active-type unit)))
+    unit
+    (-> unit
+        (assoc :active-type type)
+        reset-questions)))
+
+;; handlers
+(defn handle-question-answered [unit correct?]
+  (-> unit
+      (answer-current-question correct?)
+      next-question))
+
+(defn handle-set-filters [unit filters]
+  (-> unit
+      reset-questions
+      (assoc :filters filters)
+      next-question))
+
 (defn handle-keypress [unit key]
   (case key
     :right (next-question unit)
     :L-key (next-question unit)
     :left (previous-question unit)
     :H-key (previous-question unit)
-    :up (toggle-show-answers unit)
-    :K-key (toggle-show-answers unit)
-    :down (toggle-show-answers unit)
-    :J-key (toggle-show-answers unit)
+    :up (handle-question-answered unit true)
+    :K-key (handle-question-answered unit true)
+    :down (handle-question-answered unit false)
+    :J-key (handle-question-answered unit false)
     :zero-key (back-to-first-q unit)
+    :enter (toggle-show-answers unit)
+    :tab (toggle-show-answers unit)
     unit))
+
+
+(defn create []
+  (next-question base-drill))
+
+
+
+;; Tests

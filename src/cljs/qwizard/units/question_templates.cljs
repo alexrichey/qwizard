@@ -3,11 +3,20 @@
             [qwizard.utils :as utils]
             [qwizard.german.phrases :as phrases]))
 
+(defn answer-correct [question]
+  (assoc question :got-it-correct true))
+
+(defn answer-wrong [question]
+  (assoc question :got-it-correct false))
+
 (defn get-answer [question]
   (:answer question))
 
 (defn get-question [question]
   (:question question))
+
+(defn got-it-correct? [question]
+  (:got-it-correct question))
 
 (defn verb-template [subject verb tense]
   {:question [{:word "subject: " :raw? true} {:word subject :display :german}

@@ -44,8 +44,16 @@ div.ui.container {
   float: left;
 }
 
-.caret-right {
+.up-down-carets {
   float: right;
+}
+
+.thumbs-down {
+  color: #E11514;
+}
+
+.thumbs-up {
+  color: #3DBF1E;
 }
 
 .question {

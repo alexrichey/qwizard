@@ -6,7 +6,8 @@
 (def default-db
   {:name "Der Tisch"
    :current-unit :drills
-   :units {:drills (drills/create)}})
+   :units {:drills (drills/create)
+           :quizzer {:name "Quiz Me!"}}})
 
 (defn set-chapter-filter [db chapter]
   (if (not (some? chapter))

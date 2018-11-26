@@ -11,7 +11,7 @@
  (fn [coeffects event]
    (let [filters (second event)
          db    (:db coeffects)]
-     {:db (update-in db DB-KEY #(drills/set-filters % filters))})))
+     {:db (update-in db DB-KEY #(drills/handle-set-filters % filters))})))
 
 (re-frame.core/reg-event-fx
  :set-drill-type
@@ -34,3 +34,10 @@
      (case direction
        :next {:db (update-in db DB-KEY #(drills/next-question %))}
        :previous {:db (update-in db DB-KEY #(drills/previous-question %))}))))
+
+(re-frame.core/reg-event-fx
+ :answer-question
+ (fn [coeffects event]
+   (let [db (:db coeffects)
+         correct? (second event)]
+     {:db (update-in db DB-KEY #(drills/handle-question-answered % correct?))})))

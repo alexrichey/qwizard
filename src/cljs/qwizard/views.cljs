@@ -15,11 +15,11 @@
      [sa/Menu {}
       (doall (map (fn [x] [sa/MenuItem {:name (:name x) :active false :key (:name x)}]) (vals @units)))]
      [:div {:tab-index 0 :on-key-down (fn [e] (let [keycode (.-keyCode e)]
+                                                (.preventDefault e)
                                                 (re-frame.core/dispatch [:keypress keycode])))}
-      [sa/Container {}
-       (case current-unit-key
-         :drills (drills-view/main)
-         [:div {} "---- no unit spec'd -----"])]]
+      (case current-unit-key
+        :drills (drills-view/main)
+        [:div {} "---- no unit spec'd -----"])]
      [:div#footer {}
       [sa/Grid {:columns 12}
        [sa/GridRow {} 
