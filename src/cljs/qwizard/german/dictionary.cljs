@@ -24,7 +24,7 @@
    {:german "Vater" :article "der" :plural "Väter" :english "Father" :chapter 3 :type :noun}
 
    ;; Chapter 17
-   {:german "Pflaster" :article "das" :plural "-n" :english "Ointment" :chapter 17 :type :noun}
+   {:german "Pflaster" :article "das" :plural "-n" :english "Patch" :chapter 17 :type :noun}
    {:german "Salbe" :article "die" :plural "-n" :english "Ointment" :chapter 17 :type :noun}
    {:german "Tablette" :article "die" :plural "-n" :english "Tablet" :chapter 17 :type :noun}
    {:german "Schmerzen" :article "die" :plural true :english "Pain" :chapter 17 :type :noun}
