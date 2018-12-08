@@ -94,4 +94,5 @@
       [main-question-panel unit]
       [stats unit]
       [answers-table unit]
-      [diag/viewer (unit/diagnostic @unit)]])))
+      ;; [diag/viewer (unit/diagnostic @unit)]
+      ])))

@@ -7,7 +7,7 @@
   {:name "Qwizard DB"
    :current-unit :drills
    :units {:drills (drills/create)
-           :quizzer {:name "Quiz Me!"}}})
+           :quizzer {:key :quizzer :name "More Types Soon!"}}})
 
 (defn change-unit [db unit-key]
   (case unit-key

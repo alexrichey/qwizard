@@ -13,24 +13,16 @@
         current-unit (get @units current-unit-key)]
 
     [:div.main
-     [sa/Menu (doall (map (fn [x]
-                            [sa/MenuItem {:name (:name x) :active false :key (:name x)}])
-                          (vals @units)))]
+     [sa/Menu (doall (map (fn [unit]
+                            (let [is-active? (= (:key unit) current-unit-key)]
+                              [sa/MenuItem {:name (:name unit) :active is-active? :key (:name unit)}]))
+                          (vals @units)))
+      [sa/MenuItem {:position :right} [:img.qwizard {:src "img/qwizard-mascot-pixilart.png"}]]]
      [:div {:on-key-down (fn [e]
                            (let [keycode (.-keyCode e)]
                              (.preventDefault e)
                              (re-frame.core/dispatch [:keypress keycode])))}
       (case current-unit-key
-        :drills [drills-view/main])]
-
-     [:div#footer
-      [sa/Grid {:columns 12}
-       [sa/GridRow
-        [sa/GridColumn {:width 3}
-         [:img {:src "img/qwizard-mascot-pixilart.png"}]]
-        [sa/GridColumn {:width 9}
-         [:div.qwizard-says
-          [:div "Ich bin das Qwizard!"]
-          [:div "Trainiere dich selbst!"]]]]]]]))
+        :drills [drills-view/main])]]))
 
 

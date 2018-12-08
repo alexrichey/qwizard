@@ -72,3 +72,8 @@ button.show-answer {
   bottom: 10px;
   left: 50%;
 }
+
+img.qwizard {
+  height: 40px;
+  float: right;
+}
