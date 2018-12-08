@@ -34,6 +34,18 @@ div.ui.container {
   padding: 0px 17px;
 }
 
+div.ui.card {
+  margin: 20px auto;
+}
+
+div.ui.visible.content {
+  width: 100%
+}
+
+div.question-cover {
+  background: white;
+}
+
 .centered {
   position: absolute;
   top: 38%;

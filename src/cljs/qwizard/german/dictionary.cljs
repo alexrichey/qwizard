@@ -81,7 +81,7 @@
    {:german "Urlaub" :article "der" :plural "" :english "Vacation" :chapter 15 :type :noun}
    {:german "Rezept" :article "das" :plural "-e" :english "Recipe" :chapter 15 :type :noun}
    {:german "Reisebüro" :article "das" :plural "s" :english "Travel Agency" :chapter 15 :type :noun}
-   {:german "Mesch" :article "der" :plural "-en" :english "Human" :chapter 15 :type :noun}
+   {:german "Mensch" :article "der" :plural "-en" :english "Human" :chapter 15 :type :noun}
    {:german "Turm" :article "der" :plural "-ë" :english "Tower" :chapter 15 :type :noun}
    {:german "Spielplatz" :article "der" :plural "-ë" :english "Playground" :chapter 15 :type :noun}
    {:german "Schloss" :article "das" :plural "-ër" :english "Castle" :chapter 15 :type :noun}

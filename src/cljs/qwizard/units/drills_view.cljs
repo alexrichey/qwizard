@@ -34,12 +34,25 @@
     [sa/ButtonGroup {:class "btn-group"}
      (doall (map (fn [{drill-name :name drill-type :type}]
                    [sa/Button {:key (utils/rand-str)
+                               :color :teal 
                                :active (= drill-type (:active-type @unit))
                                :on-click (fn [e]
                                            (.preventDefault e)
                                            (re-frame.core/dispatch [:set-drill-type drill-type]))}
                     drill-name])
                  (:drill-types @unit)))]))
+
+(defn question-container []
+  (fn [unit]
+    (let [question-template (unit/get-current-question @unit)
+          answer (qts/get-answer question-template)
+          question (qts/get-question question-template)]
+      [sa/Card
+       [sa/CardHeader "Translate Please!"]
+       [sa/CardContent [sa/Reveal {:animated "small fade"}
+                        (when (not (unit/show-answers? @unit))
+                          [sa/RevealContent {:visible true} [:div.question-cover (lang/phrase question)]])
+                        [sa/RevealContent {:hidden true} [:div (lang/phrase answer)]]]]])))
 
 (defn main-question-panel []
   (fn [unit]
@@ -48,20 +61,23 @@
         [drill-type-buttons unit]
         [:div
          [chapter-dropdown (atom (:filters @unit))]]
-        [:div (str "Question " (unit/get-current-question-num @unit))]
-        [:div.centered
-         [:i.fas.fa-caret-left.fa-6x.caret-left {:onClick #(re-frame.core/dispatch [:change-question :previous])}]
-         [:div.up-down-carets
-          [:div "yep." [:i.fas.fa-thumbs-up.fa-3x.thumbs-up {:onClick #(re-frame.core/dispatch [:answer-question true])}]]
-          [:br]
-          [:div "nope"
-           [:i.fas.fa-thumbs-down.fa-3x.thumbs-down {:onClick #(re-frame.core/dispatch [:answer-question false])}]]]
-         [:span.question
-          (let [question (unit/get-current-question @unit)]
-            (lang/phrase (if (unit/show-answers? @unit)
-                           (qts/get-answer question)
-                           (qts/get-question question))))]]
-        [:button.show-answer {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answer (Press Enter)"]]]))
+        [question-container unit]
+        (comment
+         [:div (str "Question " (unit/get-current-question-num @unit))]
+         [:div.centered
+          [:i.fas.fa-caret-left.fa-6x.caret-left {:onClick #(re-frame.core/dispatch [:change-question :previous])}]
+          [:div.up-down-carets
+           [:div "yep." [:i.fas.fa-thumbs-up.fa-3x.thumbs-up {:onClick #(re-frame.core/dispatch [:answer-question true])}]]
+           [:br]
+           [:div "nope"
+            [:i.fas.fa-thumbs-down.fa-3x.thumbs-down {:onClick #(re-frame.core/dispatch [:answer-question false])}]]]
+          [:span.question
+           [question-container unit]
+           (let [question (unit/get-current-question @unit)]
+             (lang/phrase (if (unit/show-answers? @unit)
+                            (qts/get-answer question)
+                            (qts/get-question question))))]])
+        (comment [:button.show-answer {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answer (Press Enter)"])]]))
 
 (defn stats []
   (fn [unit]
