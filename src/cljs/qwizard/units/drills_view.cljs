@@ -62,22 +62,29 @@
           question (qts/get-question question-template)]
       [sa/Card
        [sa/CardHeader "Translate Please!"]
-       [sa/CardContent {:class "card-question-body"} [sa/Reveal {:animated "small fade"}
-                        (when (not (unit/show-answers? @unit))
-                          [sa/RevealContent {:visible true} [:div.question-cover (lang/phrase question)]])
-                        [sa/RevealContent {:hidden true} [:div (lang/phrase answer)]]]]])))
+       [sa/CardContent {:class "card-question-body"}
+        [sa/Reveal {:animated "small fade"}
+         (when (not (unit/show-answers? @unit))
+           [sa/RevealContent {:visible true} [:div.question-cover
+                                              [:div "Question: "]
+                                              [:div (lang/phrase question)]]])
+         [sa/RevealContent {:hidden true} [:div
+                                           [:div "Answer: "]
+                                           [:div (lang/phrase answer)]]]]]])))
 
 (defn drills-info []
-  (let [controls ["Up / k"      "Got it!"
-                  "Down / j"    "Nope..."
-                  "Right / l"   "Skip it"
+  (let [controls ["Up / k"      "Got it. Mark the Question as Correct!"
+                  "Down / j"    "Nope. Whiff. Wrong."
+                  "Right / l"   "Skip the Question"
                   "Left / h"    "Go back"
                   "Enter / tab" "Show the Answer"]]
    (fn []
      [:div {:style {:padding "20px"}}
       [:img {:style {:height "100px"} :src "img/qwizard-mascot-pixilart.png"}] [:span "Guten Tag!"]
       [:div {:style {:margin-top "20px"}}]
-      [:h3 "Here are the controls: "]
+      [:h4 "Directions:"]
+      [:div (str "Use the buttons to indicate whether you knew the answer. \n"
+                "Or use the controls below (that's how the cool kids do it)")]
       [sa/Table
        [sa/TableHeader
         [sa/TableRow
@@ -99,6 +106,21 @@
                :content (r/as-element [drills-info])
                :trigger (r/as-element [:i.fa.fa-info-circle {}])}]))
 
+(defn control-buttons []
+  (fn []
+    [:div {:style {:text-align "center"}}
+     [:i.fa.fa-check-circle.fa-2x {:style {:color "green" :margin-right "10px"}
+                                   :onClick #(re-frame.core/dispatch [:answer-question true])}]
+     [:i.fas.fa-times.fa-2x {:style {:color "red"}
+                             :onClick #(re-frame.core/dispatch [:answer-question false])}]]))
+
+(defn stats []
+  (fn [unit]
+    (let [freqs (frequencies (map #(:got-it-correct %) (unit/get-questions @unit)))]
+      [:div
+       [:div (str "You're going " (or (get freqs true) 0) " for " (+ (or (get freqs true) 0) (or (get freqs false) 0)) )]
+       (if (> (get freqs nil) 1) [:div (str "However... you didn't try on " (dec (get freqs nil)))])])))
+
 (defn main-question-panel []
   (fn [unit]
     [sa/Container {:tab-index 0}
@@ -107,29 +129,9 @@
         [:div.info-icon-container [drills-modal @unit]]
         [:div [chapter-dropdown (atom (:filters @unit))]]
         [question-container unit]
-        (comment
-         [:div (str "Question " (unit/get-current-question-num @unit))]
-         [:div.centered
-          [:i.fas.fa-caret-left.fa-6x.caret-left {:onClick #(re-frame.core/dispatch [:change-question :previous])}]
-          [:div.up-down-carets
-           [:div "yep." [:i.fas.fa-thumbs-up.fa-3x.thumbs-up {:onClick #(re-frame.core/dispatch [:answer-question true])}]]
-           [:br]
-           [:div "nope"
-            [:i.fas.fa-thumbs-down.fa-3x.thumbs-down {:onClick #(re-frame.core/dispatch [:answer-question false])}]]]
-          [:span.question
-           [question-container unit]
-           (let [question (unit/get-current-question @unit)]
-             (lang/phrase (if (unit/show-answers? @unit)
-                            (qts/get-answer question)
-                            (qts/get-question question))))]])
-        (comment [:button.show-answer {:onClick #(re-frame.core/dispatch [:toggle-show-answers])} "Show Answer (Press Enter)"])]]))
+        [control-buttons]
+        [stats unit]]]))
 
-(defn stats []
-  (fn [unit]
-    (let [freqs (frequencies (map #(:got-it-correct %) (unit/get-questions @unit)))]
-      [:div
-       [:div (str "You're going " (or (get freqs true) 0) " for " (+ (or (get freqs true) 0) (or (get freqs false) 0)) )]
-       (if (> (get freqs nil) 1) [:div (str "However... you didn't try on " (dec (get freqs nil)))])])))
 
 (defn answers-table []
   (fn [unit]
@@ -153,7 +155,6 @@
     (let [unit (re-frame/subscribe [::subs/drills])]
      [:div
       [main-question-panel unit]
-      [stats unit]
       [answers-table unit]
       ;; [diag/viewer (unit/diagnostic @unit)]
       ])))

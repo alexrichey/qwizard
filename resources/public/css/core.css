@@ -11,7 +11,6 @@
 }
 
 .articles-drill {
-  height: 300px;
   border-style: solid:
   border-color: black;
   border-width: 1px;
@@ -29,6 +28,7 @@ body {
 }
 
 div.ui.container {
+  width: 100%;
   background: white;
   border-radius: 3px;
   padding: 0px 17px;
