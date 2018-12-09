@@ -145,9 +145,10 @@
       (map (fn [q] [sa/TableRow {:key (utils/rand-str)}
                     [sa/TableCell {:key (utils/rand-str)} (lang/phrase (qts/get-question q))]
                     [sa/TableCell {:key (utils/rand-str)} (lang/phrase (qts/get-answer q))]
-                    [sa/TableCell {:key (utils/rand-str)} (if (:got-it-correct q)
-                                                            [:i.fas.fa-check]
-                                                            [:i.fas.fa-times])]])
+                    [sa/TableCell {:key (utils/rand-str)} (case (:got-it-correct q)
+                                                            true [:i.fas.fa-check]
+                                                            false [:i.fas.fa-times]
+                                                            "-")]])
            (rest (take QUESTION-HISTORY-MAX-ROWS (reverse (unit/get-questions @unit)))))]]))
 
 (defn main []
