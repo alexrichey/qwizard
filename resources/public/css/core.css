@@ -42,6 +42,14 @@ div.ui.visible.content {
   width: 100%
 }
 
+.card-question-body {
+  min-height: 100px;
+}
+
+.info-icon-container {
+  float: right;
+}
+
 div.question-cover {
   background: white;
 }

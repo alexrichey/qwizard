@@ -42,6 +42,19 @@
                     drill-name])
                  (:drill-types @unit)))]))
 
+(defn modal-example []
+  (fn []
+    [sa/Modal {:trigger (r/as-element [sa/Button "Show Modal"])}
+     [sa/ModalHeader "Select a Photo"]
+     [sa/ModalContent {:image true}
+      [sa/Image {:wrapped true
+                 :size    "medium"
+                 :src     "http://semantic-ui.com/images/avatar2/large/rachel.png"}]
+      [sa/ModalDescription
+       [sa/Header "Default Profile Image"]
+       [:p "We've found the following gravatar image associated with your e-mail address."]
+       [:p "Is it okay to use this photo?"]]]]))
+
 (defn question-container []
   (fn [unit]
     (let [question-template (unit/get-current-question @unit)
@@ -49,18 +62,50 @@
           question (qts/get-question question-template)]
       [sa/Card
        [sa/CardHeader "Translate Please!"]
-       [sa/CardContent [sa/Reveal {:animated "small fade"}
+       [sa/CardContent {:class "card-question-body"} [sa/Reveal {:animated "small fade"}
                         (when (not (unit/show-answers? @unit))
                           [sa/RevealContent {:visible true} [:div.question-cover (lang/phrase question)]])
                         [sa/RevealContent {:hidden true} [:div (lang/phrase answer)]]]]])))
+
+(defn drills-info []
+  (let [controls ["Up / k"      "Got it!"
+                  "Down / j"    "Nope..."
+                  "Right / l"   "Skip it"
+                  "Left / h"    "Go back"
+                  "Enter / tab" "Show the Answer"]]
+   (fn []
+     [:div {:style {:padding "20px"}}
+      [:img {:style {:height "100px"} :src "img/qwizard-mascot-pixilart.png"}] [:span "Guten Tag!"]
+      [:div {:style {:margin-top "20px"}}]
+      [:h3 "Here are the controls: "]
+      [sa/Table
+       [sa/TableHeader
+        [sa/TableRow
+         [sa/TableHeaderCell "Key"]
+         [sa/TableHeaderCell "What It Does"]]]
+       [sa/TableBody
+        (doall (map
+                (fn [x]
+                  [sa/TableRow {:key (utils/rand-str)}
+                   [sa/TableCell (str (first x))]
+                   [sa/TableCell (str (second x))]])
+                (partition 2 controls)))]]])))
+
+(defn drills-modal []
+  (fn [unit]
+    [sa/Modal {:defaultOpen (:show-controls-on-init unit)
+               :close-icon true
+               :on-close #(re-frame.core/dispatch [:disable-control-modal-auto-open])
+               :content (r/as-element [drills-info])
+               :trigger (r/as-element [:i.fa.fa-info-circle {}])}]))
 
 (defn main-question-panel []
   (fn [unit]
     [sa/Container {:tab-index 0}
        [:div.articles-drill
         [drill-type-buttons unit]
-        [:div
-         [chapter-dropdown (atom (:filters @unit))]]
+        [:div.info-icon-container [drills-modal @unit]]
+        [:div [chapter-dropdown (atom (:filters @unit))]]
         [question-container unit]
         (comment
          [:div (str "Question " (unit/get-current-question-num @unit))]

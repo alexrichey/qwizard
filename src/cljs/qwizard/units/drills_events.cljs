@@ -41,3 +41,10 @@
    (let [db (:db coeffects)
          correct? (second event)]
      {:db (update-in db DB-KEY #(drills/handle-question-answered % correct?))})))
+
+(re-frame.core/reg-event-fx
+ :disable-control-modal-auto-open
+ (fn [coeffects event]
+   (let [db (:db coeffects)
+         correct? (second event)]
+     {:db (update-in db DB-KEY drills/turn-off-show-controls-on-init)})))

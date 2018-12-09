@@ -14,6 +14,7 @@
    :active-type :nouns
    :filters {}
    :show-answers false
+   :show-controls-on-init true
    :question-number 0 ;; note: question-number is 1-indexed (ie the first question is question 1)
    :questions-on-deck []
    :keypress-handler nil
@@ -54,6 +55,9 @@
 ;; setters
 (defn toggle-show-answers [unit]
   (update unit :show-answers not))
+
+(defn turn-off-show-controls-on-init [unit]
+  (assoc unit :show-controls-on-init false))
 
 (defn back-to-first-q [unit]
   (assoc unit :question-number (if (count (:questions unit))
