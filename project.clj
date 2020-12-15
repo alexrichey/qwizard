@@ -14,7 +14,8 @@
   :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
                                     "test/js"]
 
-  :figwheel {:css-dirs ["resources/public/css"]}
+  :figwheel {:nrepl-port 7002
+             :css-dirs ["resources/public/css"]}
 
   :repl-options {:nrepl-middleware [cider.piggieback/wrap-cljs-repl]}
 
@@ -27,14 +28,14 @@
 
     :plugins      [[lein-figwheel "0.5.16"]
                    [lein-doo "0.1.8"]]}
-   :prod { }
-   }
+   :prod {}}
 
   :cljsbuild
   {:builds
    [{:id           "dev"
      :source-paths ["src/cljs"]
-     :figwheel     {:on-jsload "qwizard.core/mount-root"}
+     :figwheel     {:on-jsload "qwizard.core/mount-root"
+                    }
      :compiler     {:main                 qwizard.core
                     :output-to            "resources/public/js/compiled/app.js"
                     :output-dir           "resources/public/js/compiled/out"
@@ -57,6 +58,4 @@
      :compiler     {:main          qwizard.runner
                     :output-to     "resources/public/js/compiled/test.js"
                     :output-dir    "resources/public/js/compiled/test/out"
-                    :optimizations :none}}
-    ]}
-  )
+                    :optimizations :none}}]})
